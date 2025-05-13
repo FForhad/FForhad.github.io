@@ -1,330 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forhad Uddin Ahmed</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #eef4fa; /* Soft blue background */
+  color: #1e293b;
+}
 
-  <head>
+h1, h2 { margin: 0 0 10px; }
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+.wrapper {
+  display: grid;
+  grid-template-areas:
+    "intro intro"
+    "objective objective"
+    "experience projects"
+    "skills skills"
+    "publications programming"
+    "extracurricular contact";
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+  min-height: 100vh;
+}
 
-    <title>Forhad's Portfolio</title>
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+.intro { 
+  grid-area: intro; 
+  text-align: center;
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  color: white;
+}
 
-    <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="vendor/devicons/css/devicons.min.css" rel="stylesheet">
-    <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
-          
+.intro a { color: #f0fdf4; }
 
-    <!-- Custom styles for this template -->
-    <link href="css/resume.min.css" rel="stylesheet">
+.objective { grid-area: objective; }
+.experience { grid-area: experience; }
+.projects { grid-area: projects; }
+.skills { grid-area: skills; }
+.publications { grid-area: publications; }
+.programming { grid-area: programming; }
+.extracurricular { grid-area: extracurricular; }
+.contact { grid-area: contact; }
 
-  </head>
+ul {
+  padding-left: 20px;
+  margin: 5px 0;
+}
 
-  <body id="page-top">
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">
-        <span class="d-block d-lg-none">Forhad Uddin Ahmed</span>
-        <span class="d-none d-lg-block">
-          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/profile.png" alt="">
-        </span>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#education">Education</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#skills">Skills</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#cp">Competitive Programming</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#interests">Interests</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#awards">Awards</a>
-          </li>
-        </ul>
+.badge {
+  background: #dbeafe;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+
+@media (max-width: 768px) {
+  .wrapper {
+    grid-template-areas:
+      "intro"
+      "objective"
+      "experience"
+      "projects"
+      "skills"
+      "publications"
+      "programming"
+      "extracurricular"
+      "contact";
+    grid-template-columns: 1fr;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <div class="card intro">
+        <img src="forhad_.png" alt="Forhad Uddin Ahmed" class="profile-pic">
+        <h1>Forhad Uddin Ahmed</h1>
+        <p>Software Engineer | Python, Django | Competitive Programmer</p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/fforhad">fforhad</a> |
+           <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/fforhad">fforhad</a> |
+           <strong>LeetCode:</strong> <a href="https://leetcode.com/fforhad">fforhad</a></p>
       </div>
-    </nav>
+      
 
-    <div class="container-fluid p-0">
-
-      <section class="resume-section p-3 p-lg-5 d-flex d-column" id="about">
-        <div class="my-auto">
-          <h1 class="mb-0">Forhad Uddin Ahmed
-            <span class="text-primary"></span>
-          </h1>
-          <div class="subheading mb-5">HN-47 Omar Ali len, West Rampura, Dhaka 1219 · (+880) 1829464911 ·
-            <a href="mailto:name@email.com">forhad.uddin892@email.com</a>
-          </div>
-          <p class="mb-5">I am Highly motivated and detail-oriented software engineering graduate seeking an entry-level position to utilize my strong programming skills and academic project experience to contribute to a dynamic software development team.</p>
-          <ul class="list-inline list-social-icons mb-0">
-            <li class="list-inline-item">
-              <a href="https://www.facebook.com/camouflaze/">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="mailto:forhad.uddin892@gmail.com">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://www.linkedin.com/in/fforhad/">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://github.com/FForhad">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://leetcode.com/FForhad">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-code fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
-        <div class="my-auto">
-          <h2 class="mb-5">Education</h2>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Bangladesh Army International University of Science & Technology</h3>
-              <div class="subheading mb-3">Bachelor of Science</div>
-              <div>Computer Science & Engineering (Major Machine Learning)</div>
-              <p>CGPA: 3.63 out of 4.00</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">April 2019 - July 2023</span>
-            </div>
-          </div>
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Ispahani Public School & College, Cumilla</h3>
-              <div class="subheading mb-3">Higher Secondary School Certificate (HSC)</div>
-              <div>Science Group</div>
-              <p>GPA: 4.75 out of 5.00</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary">June 2016 - June 2018</span>
-            </div>
-          </div>
-
-          <div class="resume-item d-flex flex-column flex-md-row">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">Cumilla Cantonment High School</h3>
-              <div class="subheading mb-3">Secondary School Certificate (SSC)</div>
-              <div>Science Group</div>
-              <p>GPA: 5.00 out of 5.00</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary"> April 2016</span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="skills">
-        <div class="my-auto">
-          <h2 class="mb-5">Skills</h2>
-
-          <div class="subheading mb-3">Programming Languages &amp; Tools</div>
-          <ul class="list-inline list-icons">
-            <li class="list-inline-item">
-              <i class="devicons devicons-html5"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicons devicons-css3"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicons devicons-bootstrap"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicon-django-plain"></i>
-            </li>
-            <li class="list-inline-item">
-            <i class="devicon-kotlin-plain "></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicons devicon-android-plain"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicon-gradle-plain"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicons devicons-git"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicon-mysql-plain"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicon-sqlite-plain"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="devicon-cplusplus-plain"></i>
-            </li>
-            
-            
-          </ul>
-
-          <div class="subheading mb-3">Workflow</div>
-          <ul class="fa-ul mb-0">
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              Mobile-First, Responsive Design</li>
-            <li>
-              <li>
-                <i class="fa-li fa fa-check"></i>
-                RESTful API</li>
-              <li>
-              <i class="fa-li fa fa-check"></i>
-              Cross Browser Testing &amp; Debugging</li>
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              Cross Functional Teams</li>
-            <li>
-              <i class="fa-li fa fa-check"></i>
-              Agile Development &amp; Scrum</li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="projects">
-        <div class="my-auto">
-          <h2 class="mb-5">Projects</h2>
-          <div>
-            You can visit my <a href="https://www.github.com/fforhad">Github_profile</a> for visiting all projects.
-          </div>
-
-          
-
-        
-
-        </div>
-
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="cp">
-        <div class="my-auto">
-          <h2 class="mb-5">Competitive Programming</h2>
-
-          <div class="resume-item d-flex flex-column flex-md-row mb-5">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">ACM ICPC</h3>
-              <div class="subheading mb-3">International Collegiate Programming Contest</div>
-              <div>BAIUST_FALCON Dhaka Regional Contest 2021</div>
-              <div>BAIUST_FALCON_2.0 Dhaka Regional Contest 2022</div>
-              <div>BAIUST_OneLastTime Dhaka Regional Contest 2023</div>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary"></span>
-            </div>
-          </div>
-
-          <div class="resume-item d-flex flex-column flex-md-row">
-            <div class="resume-content mr-auto">
-              <h3 class="mb-0">IUPC</h3>
-              <div class="subheading mb-3">Inter University Programming Contest</div>
-              <div>BAIUST_NAMELESS IUPC CUET 2021</div>
-              <p>BAIUST_FALCON IUPC SUST 2023</p>
-            </div>
-            <div class="resume-date text-md-right">
-              <span class="text-primary"></span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="interests">
-        <div class="my-auto">
-          <h2 class="mb-5">Interests</h2>
-          <p>Apart from being a software developer, I enjoy most of my time being outdoors.</p>
-          <p class="mb-0">When forced indoors, I follow a number of sci-fi and fantasy genre movies and television shows, I am an aspiring chef, and I spend a large amount of my free time exploring the latest technolgy advancements.</p>
-        </div>
-      </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="awards">
-        <div class="my-auto">
-          <h2 class="mb-5">Awards &amp; Certifications</h2>
-          <ul class="fa-ul mb-0">
-            <li>
-              <i class="fa-li fa fa-trophy text-warning"></i>
-              Programming for Everyone - Coursera Certification</li>
-            <li>
-              <i class="fa-li fa fa-trophy text-warning"></i>
-              Mobile App developer - Udemy Certification</li>
-            <li>
-              <i class="fa-li fa fa-trophy text-warning"></i>
-              2<sup>nd</sup>
-              Place - BAIUST - Line Follower Robot Competition 2019</li>
-            <li>
-            <li>
-              <i class="fa-li fa fa-trophy text-warning"></i>
-              Dhaka Regional Contest Certification - ICPC 2021</li>
-              <li>
-                <i class="fa-li fa fa-trophy text-warning"></i>
-                Dhaka Regional Contest Certification - ICPC 2022</li>
-            <li>
-                <i class="fa-li fa fa-trophy text-warning"></i>
-                Dhaka Regional Contest Certification - ICPC 2023</li>
-          </ul>
-        </div>
-      </section>
-
+    <div class="card objective">
+      <h2>Objective</h2>
+      <p>
+        Versatile Software Engineer skilled in Python, Django, and backend systems. 
+        Passionate about scalable app development, DevOps, and cloud deployment. 
+        Language agnostic and quick to adapt. 
+        Eager to grow into technical leadership while delivering impactful solutions.
+      </p>
     </div>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <div class="card experience">
+      <h2>Experience</h2>
+      <p><strong>Sicunet Inc. (Nov 2023 – Feb 2025)</strong></p>
+      <ul>
+        <li>Backend development (Django, MySQL, ReactJS)</li>
+        <li>30% performance boost with backend optimizations</li>
+        <li>Deployed cloud-based systems and payment integration</li>
+      </ul>
+      <p><strong>Systemica Institut (Feb – Apr 2025)</strong></p>
+      <ul>
+        <li>Backend API with FastAPI and Redis</li>
+      </ul>
+    </div>
 
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <div class="card projects">
+      <h2>Projects</h2>
+      <p><strong>VirtualLife (2025)</strong></p>
+      <ul>
+        <li>Django, ReactJS, JWT, OAuth2, TensorFlow</li>
+        <li>AI moderation, CI/CD with GitHub Actions, Docker</li>
+        <li><a href="https://github.com/FForhad/VirtualLife">GitHub Repo</a></li>
+      </ul>
+    </div>
 
-    <!-- Custom scripts for this template -->
-    <script src="js/resume.min.js"></script>
+    <div class="card skills">
+      <h2>Skills</h2>
+      <div class="badges">
+        <div class="badge">Python</div>
+        <div class="badge">Django / DRF</div>
+        <div class="badge">FastAPI</div>
+        <div class="badge">ReactJS</div>
+        <div class="badge">MySQL</div>
+        <div class="badge">Docker</div>
+        <div class="badge">CI/CD (GitHub Actions)</div>
+        <div class="badge">Linux</div>
+        <div class="badge">TensorFlow</div>
+        <div class="badge">spaCy</div>
+      </div>
+    </div>
 
-  </body>
+    <div class="card publications">
+      <h2>Publications</h2>
+      <ul>
+        <li>Bitcoin Price Forecasting, IAPGOS Journal – <a href="https://doi.org/10.35784/iapgos.5657">DOI</a></li>
+        <li>Bitcoin ML Comparison, ICICT4SD2023 – <a href="https://ieeexplore.ieee.org/document/10303490">DOI</a></li>
+        <li>Brain Stroke ML System, ICCIT2023 – <a href="https://ieeexplore.ieee.org/document/10440991">DOI</a></li>
+      </ul>
+    </div>
 
+    <div class="card programming">
+      <h2>Competitive Programming</h2>
+      <ul>
+        <li>ICPC Dhaka Regionals (2021–2023) – BAIUST_OneLastTime</li>
+        <li>IUPC at CUET, SUST – Team BAIUST_Falcon</li>
+        <li>550+ problems solved – <a href="https://stopstalk.com/user/profile/FForhad">StopStalk Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="card extracurricular">
+      <h2>Extracurricular</h2>
+      <ul>
+        <li>General Secretary, BAIUST Computer Club</li>
+        <li>Organized Google I/O Extended & EMK Center events</li>
+        <li>Conducted training on competitive programming</li>
+      </ul>
+    </div>
+
+    <div class="card contact">
+      <h2>Contact</h2>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:forhad.uddin892@gmail.com">forhad.uddin892@gmail.com</a></li>
+        <li><strong>GitHub:</strong> <a href="https://github.com/fforhad">fforhad</a></li>
+        <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/fforhad">fforhad</a></li>
+        <li><strong>LeetCode:</strong> <a href="https://leetcode.com/fforhad">fforhad</a></li>
+        <li><strong>StopStalk:</strong> <a href="https://stopstalk.com/user/profile/FForhad">FForhad</a></li>
+      </ul>
+    </div>
+  </div>
+
+</body>
 </html>

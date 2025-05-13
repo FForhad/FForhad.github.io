@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  .slider {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
+  }
+  
+  .slide {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    background-color: #f0f0f0;
+    padding: 2rem;
+    position: relative;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1.2rem;
+  }
+  
+  a.next, a.prev {
+    position: absolute;
+    font-size: 2rem;
+    bottom: 1rem;
+    text-decoration: none;
+    background: #000;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+  }
+  
+  a.prev {
+    left: 1rem;
+  }
+  
+  a.next {
+    right: 1rem;
+  }
+  
