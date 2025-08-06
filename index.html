@@ -25,8 +25,9 @@
       grid-template-areas:
         "intro intro"
         "objective objective"
-        "experience projects"
-        "skills skills"
+        "experience skills"
+        /* "experience projects"
+        "skills skills" */
         "publications programming"
         "extracurricular contact";
       grid-template-columns: 1fr 1fr;
@@ -71,6 +72,31 @@
       grid-area: skills;
     }
 
+    .skills h3 {
+      margin-top: 20px;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .skill-category {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #334155;
+    }
+
+    .skill-list {
+      font-size: 0.9rem;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+
     .publications {
       grid-area: publications;
     }
@@ -100,11 +126,15 @@
     }
 
     .badge {
-      background: #dbeafe;
+      background: #e0f2fe;
+      color: #0369a1;
       padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      white-space: nowrap;
     }
+
 
     a {
       color: #2563eb;
@@ -132,7 +162,7 @@
           "intro"
           "objective"
           "experience"
-          "projects"
+          /* "projects" */
           "skills"
           "publications"
           "programming"
@@ -150,7 +180,7 @@
     <div class="card intro">
       <img src="forhad_.png" alt="Forhad Uddin Ahmed" class="profile-pic">
       <h1>Forhad Uddin Ahmed</h1>
-      <p>Software Engineer | Python, Django | Competitive Programmer</p>
+      <p>Software Engineer | C++, Python | Competitive Programmer | Mentor</p>
       <p><strong>GitHub:</strong> <a href="https://github.com/fforhad">fforhad</a> |
         <!-- <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/ahmed-fu">ahmed-fu</a> | -->
         <strong>LeetCode:</strong> <a href="https://leetcode.com/fforhad">fforhad</a>
@@ -212,7 +242,7 @@
     </div>
 
 
-    <div class="card projects">
+    <!-- <div class="card projects">
       <h2>Projects</h2>
       <p><strong>VirtualLife (2025)</strong></p>
       <ul>
@@ -220,75 +250,60 @@
         <li>AI moderation, CI/CD with GitHub Actions, Docker</li>
         <li><a href="https://github.com/FForhad/VirtualLife">GitHub Repo</a></li>
       </ul>
-    </div>
+    </div> -->
 
     <div class="card skills">
       <h2>Skills</h2>
+      <div class="skills-grid">
 
-      <h3>Back-end</h3>
-      <div class="badges">
-        <div class="badge">Django</div>
-        <div class="badge">Django REST Framework (DRF)</div>
-        <div class="badge">FastAPI</div>
+        <div>
+          <div class="skill-category">Back-end</div>
+          <div class="skill-list">Django, DRF, FastAPI</div>
+        </div>
+
+        <div>
+          <div class="skill-category">Front-end</div>
+          <div class="skill-list">ReactJS, Next.js</div>
+        </div>
+
+        <div>
+          <div class="skill-category">Programming</div>
+          <div class="skill-list">Python, C++, JavaScript</div>
+        </div>
+
+        <div>
+          <div class="skill-category">Databases</div>
+          <div class="skill-list">MySQL, PostgreSQL, SQLite3</div>
+        </div>
+
+        <div>
+          <div class="skill-category">DevOps & Tools</div>
+          <div class="skill-list">Docker, GitHub Actions, Git, GitHub, Bitbucket</div>
+        </div>
+
+        <div>
+          <div class="skill-category">AI / ML</div>
+          <div class="skill-list">TensorFlow, spaCy</div>
+        </div>
+
+        <div>
+          <div class="skill-category">OS</div>
+          <div class="skill-list">Linux, Windows</div>
+        </div>
+
+        <div>
+          <div class="skill-category">Soft Skills</div>
+          <div class="skill-list">Problem Solving, Teamwork, Communication</div>
+        </div>
+
+        <div>
+          <div class="skill-category">Languages</div>
+          <div class="skill-list">Bangla, English</div>
+        </div>
+
       </div>
-
-      <h3>Front-end</h3>
-      <div class="badges">
-        <div class="badge">ReactJS</div>
-        <div class="badge">Next.js</div>
-      </div>
-
-      <h3>Programming Languages</h3>
-      <div class="badges">
-        <div class="badge">Python</div>
-        <div class="badge">C++</div>
-        <div class="badge">JavaScript</div>
-      </div>
-
-      <h3>Databases</h3>
-      <div class="badges">
-        <div class="badge">MySQL</div>
-        <div class="badge">PostgreSQL</div>
-        <div class="badge">SQLite3</div>
-      </div>
-
-      <h3>DevOps & Tools</h3>
-      <div class="badges">
-        <div class="badge">Docker</div>
-        <div class="badge">CI/CD (GitHub Actions)</div>
-        <div class="badge">Git</div>
-        <div class="badge">GitHub</div>
-        <div class="badge">Bitbucket</div>
-      </div>
-
-      <h3>Operating Systems</h3>
-      <div class="badges">
-        <div class="badge">Linux</div>
-        <div class="badge">Windows</div>
-      </div>
-
-      <h3>AI/ML</h3>
-      <div class="badges">
-        <div class="badge">TensorFlow</div>
-        <div class="badge">spaCy</div>
-      </div>
-
-      <h3>Soft Skills</h3>
-      <div class="badges">
-        <div class="badge">Problem-Solving</div>
-        <div class="badge">Analytical Thinking</div>
-        <div class="badge">Strong Communication</div>
-        <div class="badge">Teamwork</div>
-      </div>
-
-      <h3>Languages</h3>
-      <div class="badges">
-        <div class="badge">Bangla</div>
-        <div class="badge">English</div>
-      </div>
-
-
     </div>
+
 
     <div class="card publications">
       <h2>Publications</h2>
