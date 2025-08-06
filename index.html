@@ -1,155 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Forhad Uddin Ahmed</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: #eef4fa; /* Soft blue background */
-  color: #1e293b;
-}
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #eef4fa;
+      /* Soft blue background */
+      color: #1e293b;
+    }
 
-h1, h2 { margin: 0 0 10px; }
+    h1,
+    h2 {
+      margin: 0 0 10px;
+    }
 
-.wrapper {
-  display: grid;
-  grid-template-areas:
-    "intro intro"
-    "objective objective"
-    "experience projects"
-    "skills skills"
-    "publications programming"
-    "extracurricular contact";
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  padding: 40px;
-  max-width: 1200px;
-  margin: auto;
-  min-height: 100vh;
-}
+    .wrapper {
+      display: grid;
+      grid-template-areas:
+        "intro intro"
+        "objective objective"
+        "experience projects"
+        "skills skills"
+        "publications programming"
+        "extracurricular contact";
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
+      min-height: 100vh;
+    }
 
-.card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-}
+    .card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
 
-.intro { 
-  grid-area: intro; 
-  text-align: center;
-  background: linear-gradient(135deg, #3b82f6, #06b6d4);
-  color: white;
-}
+    .intro {
+      grid-area: intro;
+      text-align: center;
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      color: white;
+    }
 
-.intro a { color: #f0fdf4; }
+    .intro a {
+      color: #f0fdf4;
+    }
 
-.objective { grid-area: objective; }
-.experience { grid-area: experience; }
-.projects { grid-area: projects; }
-.skills { grid-area: skills; }
-.publications { grid-area: publications; }
-.programming { grid-area: programming; }
-.extracurricular { grid-area: extracurricular; }
-.contact { grid-area: contact; }
+    .objective {
+      grid-area: objective;
+    }
 
-ul {
-  padding-left: 20px;
-  margin: 5px 0;
-}
+    .experience {
+      grid-area: experience;
+    }
 
-.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
+    .projects {
+      grid-area: projects;
+    }
 
-.badge {
-  background: #dbeafe;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
+    .skills {
+      grid-area: skills;
+    }
 
-a {
-  color: #2563eb;
-  text-decoration: none;
-}
+    .publications {
+      grid-area: publications;
+    }
 
-a:hover {
-  text-decoration: underline;
-}
-.profile-pic {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid white;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
+    .programming {
+      grid-area: programming;
+    }
+
+    .extracurricular {
+      grid-area: extracurricular;
+    }
+
+    .contact {
+      grid-area: contact;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin: 5px 0;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      background: #dbeafe;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
 
 
-@media (max-width: 768px) {
-  .wrapper {
-    grid-template-areas:
-      "intro"
-      "objective"
-      "experience"
-      "projects"
-      "skills"
-      "publications"
-      "programming"
-      "extracurricular"
-      "contact";
-    grid-template-columns: 1fr;
-  }
-}
-
+    @media (max-width: 768px) {
+      .wrapper {
+        grid-template-areas:
+          "intro"
+          "objective"
+          "experience"
+          "projects"
+          "skills"
+          "publications"
+          "programming"
+          "extracurricular"
+          "contact";
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
+
 <body>
 
   <div class="wrapper">
     <div class="card intro">
-        <img src="forhad_.png" alt="Forhad Uddin Ahmed" class="profile-pic">
-        <h1>Forhad Uddin Ahmed</h1>
-        <p>Software Engineer | Python, Django | Competitive Programmer</p>
-        <p><strong>GitHub:</strong> <a href="https://github.com/fforhad">fforhad</a> |
-           <!-- <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/ahmed-fu">ahmed-fu</a> | -->
-           <strong>LeetCode:</strong> <a href="https://leetcode.com/fforhad">fforhad</a></p>
-      </div>
-      
+      <img src="forhad_.png" alt="Forhad Uddin Ahmed" class="profile-pic">
+      <h1>Forhad Uddin Ahmed</h1>
+      <p>Software Engineer | Python, Django | Competitive Programmer</p>
+      <p><strong>GitHub:</strong> <a href="https://github.com/fforhad">fforhad</a> |
+        <!-- <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/ahmed-fu">ahmed-fu</a> | -->
+        <strong>LeetCode:</strong> <a href="https://leetcode.com/fforhad">fforhad</a>
+      </p>
+    </div>
+
 
     <div class="card objective">
       <h2>Objective</h2>
       <p>
-        Versatile Software Engineer skilled in Python, Django, and backend systems. 
-        Passionate about scalable app development, DevOps, and cloud deployment. 
-        Language agnostic and quick to adapt. 
+        Versatile Software Engineer skilled in Python, Django, and backend systems.
+        Passionate about scalable app development, DevOps, and cloud deployment.
+        Language agnostic and quick to adapt.
         Eager to grow into technical leadership while delivering impactful solutions.
       </p>
     </div>
 
     <div class="card experience">
       <h2>Experience</h2>
-      <p><strong>Systemica Institut (Feb – Apr 2025)</strong></p>
+
+      <p><strong>InitZone (Own Startup) — Full-stack Software Engineer</strong> <br>
+        <em>Mymensingh, Bangladesh | Apr 2025 – Present</em>
+      </p>
       <ul>
-        <li>Backend API with FastAPI and Redis</li>
+        <li>Built <strong>Portulika</strong>, a full-stack book reading and writing platform</li>
+        <li>Led software design, backend API development, and database schema design</li>
+        <li>Managed project planning, task breakdown, and sprint reviews</li>
+        <li><strong>Tech Stack:</strong> Python, Django, JavaScript, React, Next.js, Redis, PostgreSQL</li>
       </ul>
-      <p><strong>Sicunet Inc. (Nov 2023 – Feb 2025)</strong></p>
+
+      <p><strong>Systemica Institut — DevOps Engineer</strong> <br>
+        <em>Remote (Ulm, Germany) | Feb 2025 – Apr 2025</em>
+      </p>
       <ul>
-        <li>Backend development (Django, MySQL, ReactJS)</li>
-        <li>30% performance boost with backend optimizations</li>
-        <li>Deployed cloud-based systems and payment integration</li>
+        <li>Built CI pipelines using GitHub Actions</li>
+        <li>Developed observability containers for logs and insights</li>
+        <li>Worked on backend APIs using FastAPI and Redis</li>
+        <li><strong>Tech Stack:</strong> FastAPI, Python, Redis, GitHub Actions, Docker, Prometheus/Grafana</li>
       </ul>
-      
+
+      <p><strong>EDGE Bangladesh — Industry Expert Trainer</strong> <br>
+        <em>BAIUST, Cumilla | June 2024 – May 2025</em>
+      </p>
+      <ul>
+        <li>Trainer under the government’s <strong>EDGE (Enhancing Digital Government and Economy)</strong> project</li>
+        <li>Taught CBI-013: Python (Django) course</li>
+        <li><strong>Tech Stack:</strong> Python, Django</li>
+      </ul>
+
+      <p><strong>Sicunet Inc. — Backend Software Engineer</strong> <br>
+        <em>Dhaka, Bangladesh | Nov 2023 – Feb 2025</em>
+      </p>
+      <ul>
+        <li>Worked on <strong>Jupiter Cloud</strong> and <strong>Jupiter License</strong> projects</li>
+        <li>Designed scalable backend systems and integrated payment gateways</li>
+        <li>Reduced response time by 30% through performance optimization</li>
+        <li>Contributed to <strong>Jupiter Web</strong> using Django and SQLite3</li>
+        <li><strong>Tech Stack:</strong> Python, Django, JavaScript, ReactJS, MySQL, SQLite3</li>
+      </ul>
     </div>
+
 
     <div class="card projects">
       <h2>Projects</h2>
@@ -217,4 +279,5 @@ a:hover {
   </div>
 
 </body>
+
 </html>
