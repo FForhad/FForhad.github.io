@@ -8,7 +8,7 @@
   <!-- Inter Font from Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     /* CSS Reset & Variables */
@@ -19,18 +19,67 @@
     }
 
     :root {
-      --bg-color: #eef4fa;
+      /* Light Mode Variables */
+      --bg-color: #f4f7f9;
       --card-bg: #ffffff;
-      --text-primary: #1e293b;
-      --text-secondary: #475569;
+      --card-hover-bg: #fafafa;
+      --item-bg: #f8fafc;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
       --text-muted: #64748b;
-      --border-color: rgba(226, 232, 240, 0.8);
-      --shadow-card: 0 10px 15px -3px rgba(15, 23, 42, 0.04), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
-      --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
-      --blue-accent: #3b82f6;
-      --cyan-accent: #06b6d4;
-      --blue-light: #eff6ff;
-      --blue-hover: #2563eb;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      --shadow-hover: 0 10px 30px -4px rgba(15, 23, 42, 0.1);
+      
+      --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+      --blue-accent: #4f46e5;
+      --cyan-accent: #0ea5e9;
+      --blue-light: #e0e7ff;
+      --pub-icon-bg: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      
+      /* Form Variables */
+      --input-bg: #ffffff;
+      --input-border: #cbd5e1;
+      --input-focus: #4f46e5;
+      
+      /* Contact Icons (Light) */
+      --icon-email-bg: #fef2f2; --icon-email-text: #ef4444;
+      --icon-github-bg: #f1f5f9; --icon-github-text: #0f172a;
+      --icon-leetcode-bg: #fef3c7; --icon-leetcode-text: #d97706;
+      --icon-stopstalk-bg: #ecfeff; --icon-stopstalk-text: #0891b2;
+      --icon-scholar-bg: #e0f2fe; --icon-scholar-text: #0284c7;
+    }
+
+    /* Dark Mode Variables */
+    [data-theme="dark"] {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --card-hover-bg: #334155;
+      --item-bg: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+      --shadow-hover: 0 10px 30px -4px rgba(0, 0, 0, 0.6);
+      
+      --hero-gradient: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
+      --blue-light: rgba(79, 70, 229, 0.2);
+      --pub-icon-bg: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(79, 70, 229, 0.2));
+      
+      /* Form Variables (Dark) */
+      --input-bg: #0f172a;
+      --input-border: #475569;
+      --input-focus: #818cf8;
+
+      /* Contact Icons (Dark - semi-transparent) */
+      --icon-email-bg: rgba(239, 68, 68, 0.15); --icon-email-text: #f87171;
+      --icon-github-bg: rgba(241, 245, 249, 0.1); --icon-github-text: #f1f5f9;
+      --icon-leetcode-bg: rgba(217, 119, 6, 0.15); --icon-leetcode-text: #fbbf24;
+      --icon-stopstalk-bg: rgba(8, 145, 178, 0.15); --icon-stopstalk-text: #22d3ee;
+      --icon-scholar-bg: rgba(2, 132, 199, 0.15); --icon-scholar-text: #38bdf8;
     }
 
     body {
@@ -40,27 +89,62 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Portfolio Container / Wrap */
+    /* Portfolio Container */
     .wrapper {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 2.5rem 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 2rem;
     }
 
-    /* 2-Column Responsive CSS Grid */
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 1000;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+      box-shadow: var(--shadow-card);
+      transform: scale(1.05);
+    }
+    
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    [data-theme="dark"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: none; }
+    :root:not([data-theme="dark"]) .sun-icon { display: none; }
+
+    /* 2-Column Grid Layout */
     .grid-layout {
       display: grid;
-      grid-template-columns: 4fr 6fr;
-      /* 40% left, 60% right */
-      gap: 1.5rem;
+      grid-template-columns: 3.5fr 6.5fr;
+      gap: 2rem;
     }
 
-    @media (max-width: 968px) {
+    @media (max-width: 1024px) {
       .grid-layout {
         grid-template-columns: 1fr;
       }
@@ -69,245 +153,321 @@
     /* General Card Styling */
     .card {
       background-color: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 16px;
       border: 1px solid var(--border-color);
       box-shadow: var(--shadow-card);
-      padding: 2rem;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 2.25rem;
+      transition: all 0.3s ease;
     }
 
     .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.06);
+      box-shadow: var(--shadow-hover);
     }
 
-    /* Header / Hero Card (Gradient) */
+    /* Header / Hero Section */
     .intro {
-      background: var(--primary-gradient);
+      background: var(--hero-gradient);
       color: #ffffff;
-      border: none;
       display: flex;
       align-items: center;
-      gap: 30px;
-      padding: 2.5rem;
-      border-radius: 12px;
-      box-shadow: var(--shadow-card);
+      gap: 2.5rem;
+      padding: 3.5rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .intro::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
     }
 
     .profile-pic {
+      position: relative;
+      z-index: 1;
       flex-shrink: 0;
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
-      border: none;
-      background-color: rgba(255, 255, 255, 0.1);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 6px;
+      background: linear-gradient(135deg, var(--cyan-accent), var(--blue-accent));
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
     .profile-img {
       width: 100%;
       height: 100%;
+      border-radius: 50%;
       object-fit: cover;
+      border: 4px solid #1e1b4b;
+    }
+
+    .header-info {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .header-info h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(to right, #ffffff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-info .title-text {
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .title-text span {
+      color: var(--cyan-accent);
+      font-weight: 600;
+    }
+
+    .header-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      align-items: center;
     }
 
     @media (max-width: 768px) {
       .intro {
         flex-direction: column;
         text-align: center;
-        gap: 1.5rem;
-        padding: 2rem 1.5rem;
+        padding: 2.5rem 1.5rem;
+        margin-top: 3rem;
       }
-
-      .profile-pic {
-        width: 160px;
-        height: 160px;
-        margin-bottom: 1rem;
-      }
-    }
-
-    .header-info h1 {
-      font-size: 2.25rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      margin-bottom: 0.5rem;
-      line-height: 1.2;
-    }
-
-    .header-info .title-text {
-      font-size: 1.125rem;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 1.25rem;
-      max-width: 650px;
-    }
-
-    .header-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    @media (max-width: 768px) {
-      .header-links {
-        justify-content: center;
-      }
+      .header-info h1 { font-size: 2.25rem; }
+      .header-links { justify-content: center; }
+      .title-text { justify-content: center; flex-wrap: wrap; }
     }
 
     .link-pill {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background-color: rgba(255, 255, 255, 0.15);
-      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
       text-decoration: none;
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 1.25rem;
       border-radius: 9999px;
       font-size: 0.875rem;
       font-weight: 500;
-      backdrop-filter: blur(8px);
-      transition: background-color 0.15s ease, transform 0.15s ease;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
     }
 
     .link-pill:hover {
-      background-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-1px);
+      background-color: #ffffff;
+      color: #0f172a;
+      transform: translateY(-2px);
+      border-color: #ffffff;
     }
 
-    /* Inner Column Flex containers */
+    .link-pill:hover .svg-icon {
+      stroke: var(--blue-accent);
+    }
+
+    /* Primary Hire Me Button */
+    .hire-me-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--cyan-accent), var(--blue-accent));
+      color: #ffffff;
+      border: none;
+      padding: 0.65rem 1.5rem;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .hire-me-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6);
+      color: #ffffff;
+    }
+
+    /* Inner Columns */
     .column {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 2rem;
     }
 
-    /* Section Titles styling inside Cards */
+    /* Section Titles */
     .section-title {
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--text-primary);
       letter-spacing: -0.02em;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
-      gap: 0.625rem;
-      border-bottom: 2px solid #f1f5f9;
-      padding-bottom: 0.75rem;
+      gap: 0.75rem;
     }
 
     .section-icon {
       color: var(--blue-accent);
-      flex-shrink: 0;
+      background: var(--blue-light);
+      padding: 0.4rem;
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
     }
 
     /* Content Blocks */
     .objective-p {
       font-size: 1rem;
       color: var(--text-secondary);
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
-    /* Competitive Programming achievements list */
+    /* Competitive Programming */
     .cp-list {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1.5rem;
     }
 
     .stat-box {
-      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-      border: 1px solid #bfdbfe;
-      padding: 1.25rem;
-      border-radius: 10px;
+      background: var(--item-bg);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      border-radius: 12px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-box::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: var(--blue-accent);
     }
 
     .stat-number {
-      font-size: 2.25rem;
+      font-size: 2.5rem;
       font-weight: 800;
-      color: #1d4ed8;
-      line-height: 1;
-      margin-bottom: 0.35rem;
+      background: linear-gradient(135deg, var(--blue-accent), var(--cyan-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
     }
 
     .stat-desc {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #1e40af;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .cp-achievements {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 1rem;
     }
 
     .cp-item {
       display: flex;
-      gap: 0.75rem;
-      align-items: flex-start;
-      background-color: #f8fafc;
-      padding: 0.875rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--item-bg);
+      transition: all 0.2s ease;
+    }
+    
+    .cp-item:hover {
+      border-color: var(--blue-accent);
+      background: var(--card-hover-bg);
+      transform: translateX(4px);
     }
 
     .cp-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: var(--blue-accent);
-      margin-top: 0.55rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background-color: var(--blue-light);
+      color: var(--blue-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
       flex-shrink: 0;
     }
 
     .cp-text .team {
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 600;
-      color: #0f172a;
+      color: var(--text-primary);
     }
 
     .cp-text .contest {
-      font-size: 0.8125rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      margin-top: 0.15rem;
     }
 
-    /* Publications block styling */
+    /* Publications */
     .pub-list {
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
+      gap: 1rem;
     }
 
     .pub-item {
       display: flex;
       align-items: center;
-      gap: 0.875rem;
-      background-color: #f8fafc;
-      padding: 0.875rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
+      gap: 1rem;
+      background-color: var(--card-bg);
+      padding: 1.25rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
       text-decoration: none;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
     }
 
     .pub-item:hover {
-      background-color: #eff6ff;
-      border-color: #bfdbfe;
+      border-color: var(--cyan-accent);
+      background-color: var(--card-hover-bg);
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
+      transform: translateY(-2px);
     }
 
     .pub-icon {
-      background-color: #eff6ff;
-      color: var(--blue-accent);
-      padding: 0.5rem;
-      border-radius: 6px;
+      background: var(--pub-icon-bg);
+      color: var(--cyan-accent);
+      padding: 0.75rem;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -315,26 +475,35 @@
     }
 
     .pub-text .pub-title {
-      font-size: 0.9375rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      color: #0f172a;
+      color: var(--text-primary);
+      margin-bottom: 0.15rem;
     }
 
     .pub-text .pub-journal {
-      font-size: 0.8125rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      margin-top: 0.1rem;
     }
 
-    /* Timeline (Experience) */
+    /* Experience Timeline */
     .timeline {
       position: relative;
-      border-left: 2px solid #e2e8f0;
-      padding-left: 1.5rem;
-      margin-left: 0.5rem;
+      padding-left: 2rem;
       display: flex;
       flex-direction: column;
-      gap: 1.75rem;
+      gap: 2.5rem;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0.5rem;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-color);
+      border-radius: 2px;
     }
 
     .timeline-item {
@@ -343,390 +512,489 @@
 
     .timeline-badge {
       position: absolute;
-      left: -2.05rem;
+      left: -2rem;
       top: 0.25rem;
-      width: 14px;
-      height: 14px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
-      background-color: #cbd5e1;
-      border: 3px solid var(--card-bg);
-      box-shadow: 0 0 0 1px #94a3b8;
+      background-color: var(--card-bg);
+      border: 4px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .timeline-item:hover .timeline-badge {
+      border-color: var(--cyan-accent);
+      transform: scale(1.2);
     }
 
     .timeline-item.active-job .timeline-badge {
+      border-color: var(--blue-accent);
       background-color: var(--blue-accent);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      box-shadow: 0 0 0 4px var(--blue-light);
     }
 
     .timeline-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: baseline;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.5rem;
     }
 
     .job-title {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 700;
-      color: #0f172a;
-      margin: 0;
+      color: var(--text-primary);
     }
 
     .job-company {
-      font-size: 0.9375rem;
-      font-weight: 500;
+      font-size: 0.95rem;
+      font-weight: 600;
       color: var(--blue-accent);
-      margin-top: 0.15rem;
     }
 
     .job-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 0.8125rem;
+      gap: 1.25rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      margin-bottom: 0.75rem;
+      margin-bottom: 1rem;
     }
 
     .job-meta-item {
       display: inline-flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.35rem;
     }
 
     .job-desc {
-      font-size: 0.9375rem;
+      font-size: 0.95rem;
       color: var(--text-secondary);
-      margin-bottom: 0.85rem;
-      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      line-height: 1.7;
     }
 
     .tech-box {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
+      gap: 0.5rem;
     }
 
     .tech-tag {
       font-size: 0.75rem;
-      font-weight: 500;
-      padding: 0.2rem 0.55rem;
-      border-radius: 4px;
-      background-color: #f1f5f9;
-      color: #475569;
-      border: 1px solid #e2e8f0;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      background-color: var(--bg-color);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+    
+    .tech-tag:hover {
+      background-color: var(--blue-light);
+      color: var(--blue-accent);
+      border-color: transparent;
     }
 
-    /* Skills Grid Layout (Groups) */
+    /* Skills Grid */
     .skills-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    @media (max-width: 640px) {
-      .skills-grid {
-        grid-template-columns: 1fr;
-      }
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
     }
 
     .skills-category {
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 1.15rem;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    
+    .skills-category:hover {
+      box-shadow: var(--shadow-card);
+      transform: translateY(-2px);
     }
 
     .skills-category-title {
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      border-bottom: 1.5px solid #e2e8f0;
-      padding-bottom: 0.35rem;
+      gap: 0.5rem;
       text-transform: uppercase;
-      letter-spacing: 0.025em;
+      letter-spacing: 0.05em;
+    }
+    
+    .skills-category-title svg {
+      color: var(--cyan-accent);
     }
 
     .skills-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
+      gap: 0.5rem;
     }
 
     .skill-badge {
-      font-size: 0.8125rem;
+      font-size: 0.8rem;
       font-weight: 500;
-      padding: 0.25rem 0.6rem;
-      border-radius: 6px;
-      background-color: #ffffff;
-      color: #334155;
-      border: 1px solid #e2e8f0;
-      transition: all 0.15s ease;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      background-color: var(--bg-color);
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      cursor: default;
     }
 
     .skill-badge:hover {
-      border-color: #cbd5e1;
-      background-color: #f8fafc;
-      transform: translateY(-0.5px);
+      background-color: var(--text-primary);
+      color: var(--bg-color);
     }
 
-    /* Extracurricular List */
+    /* Extracurricular */
     .extra-list {
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
+      gap: 1rem;
     }
 
     .extra-item {
       display: flex;
-      gap: 0.75rem;
+      gap: 1rem;
       align-items: flex-start;
+      padding: 1rem;
+      background: var(--item-bg);
+      border-radius: 10px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    
+    .extra-item:hover {
+      background: var(--card-hover-bg);
+      border-color: var(--border-color);
+      box-shadow: var(--shadow-sm);
     }
 
     .extra-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--cyan-accent);
-      margin-top: 0.6rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 6px;
+      background-color: var(--blue-light);
+      color: var(--blue-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
+      font-weight: 800;
+      font-size: 0.8rem;
     }
 
     .extra-text {
-      font-size: 0.9375rem;
+      font-size: 0.95rem;
       color: var(--text-secondary);
+      line-height: 1.5;
     }
 
-    /* Contact Details Grid */
+    /* Contact Block */
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 0.75rem;
+      gap: 1rem;
     }
 
     .contact-item {
       display: flex;
       align-items: center;
       gap: 1rem;
-      padding: 0.875rem 1rem;
-      border-radius: 8px;
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
       text-decoration: none;
-      transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
     }
 
     .contact-item:hover {
-      transform: translateX(3px);
-      border-color: #bfdbfe;
-      background-color: #eff6ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(0,0,0,0.1);
+      background-color: var(--card-hover-bg);
+      border-color: var(--blue-accent);
     }
 
     .contact-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 6px;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    
+    .contact-item:hover .contact-icon {
+      transform: scale(1.1);
     }
 
-    /* Custom color styles for contact points */
-    .contact-icon.email {
-      background-color: #fee2e2;
-      color: #ef4444;
-    }
+    .contact-icon.email { background-color: var(--icon-email-bg); color: var(--icon-email-text); }
+    .contact-icon.github { background-color: var(--icon-github-bg); color: var(--icon-github-text); }
+    .contact-icon.leetcode { background-color: var(--icon-leetcode-bg); color: var(--icon-leetcode-text); }
+    .contact-icon.stopstalk { background-color: var(--icon-stopstalk-bg); color: var(--icon-stopstalk-text); }
+    .contact-icon.google-scholar { background-color: var(--icon-scholar-bg); color: var(--icon-scholar-text); }
 
-    .contact-icon.github {
-      background-color: #f1f5f9;
-      color: #0f172a;
-    }
-
-    .contact-icon.leetcode {
-      background-color: #fef3c7;
-      color: #d97706;
-    }
-
-    .contact-icon.stopstalk {
-      background-color: #ecfeff;
-      color: #0891b2;
+    .contact-detail {
+      display: flex;
+      flex-direction: column;
     }
 
     .contact-detail .label {
       font-size: 0.75rem;
-      font-weight: 500;
+      font-weight: 600;
       text-transform: uppercase;
       color: var(--text-muted);
       letter-spacing: 0.05em;
-      margin-bottom: 0.1rem;
     }
 
     .contact-detail .value {
       font-size: 0.95rem;
       font-weight: 600;
-      color: #1e293b;
+      color: var(--text-primary);
+      margin-top: 0.15rem;
     }
 
-    .contact-item:hover .contact-detail .value {
-      color: var(--blue-hover);
+    .contact-detail a {
+      color: var(--blue-accent);
+      text-decoration: none;
+    }
+    .contact-detail a:hover {
+      text-decoration: underline;
     }
 
-    /* Micro SVGs Classes */
-    .svg-icon {
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* Footer styling */
+    /* Footer */
     .footer {
       text-align: center;
-      padding: 2.5rem 0 1rem;
+      padding: 3rem 0 1.5rem;
       color: var(--text-muted);
-      font-size: 0.8125rem;
-      border-top: 1px solid rgba(226, 232, 240, 0.4);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
       margin-top: 1rem;
     }
 
-    /* Wishlist Floating Button (FAB) */
+    /* Wishlist FAB */
     .wishlist-fab {
       position: fixed;
       bottom: 2rem;
       right: 2rem;
       z-index: 1000;
-      background: var(--primary-gradient);
+      background: var(--hero-gradient);
       color: #ffffff;
       border: none;
-      outline: none;
-      padding: 0.875rem 1.75rem;
+      padding: 1rem 1.75rem;
       border-radius: 9999px;
       font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
-      font-weight: 700;
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 0.625rem;
-      box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.4), 0 8px 10px -6px rgba(59, 130, 246, 0.4);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .wishlist-fab:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 20px 30px -5px rgba(6, 182, 212, 0.5), 0 10px 15px -5px rgba(59, 130, 246, 0.5);
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.5);
     }
 
-    .wishlist-fab:active {
-      transform: translateY(-1px) scale(0.98);
-    }
-
-    /* Wishlist Slider Drawer */
-    .drawer-overlay {
+    /* Modals & Drawer Overlays */
+    .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
       z-index: 1010;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      transition: all 0.4s ease;
     }
-
-    .drawer-overlay.open {
+    .overlay.open {
       opacity: 1;
       visibility: visible;
     }
 
+    /* Right Side Drawer */
     .drawer {
       position: fixed;
       top: 0;
       right: 0;
       height: 100%;
-      width: 90%;
-      max-width: 460px;
+      width: 100%;
+      max-width: 440px;
       background-color: var(--card-bg);
       z-index: 1020;
-      box-shadow: -10px 0 30px rgba(15, 23, 42, 0.15);
+      box-shadow: -20px 0 40px rgba(0,0,0,0.3);
       transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
-
-    .drawer.open {
-      transform: translateX(0);
+    .drawer.open { transform: translateX(0); }
+    
+    /* Centered Modal (Contact Form) */
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -45%) scale(0.95);
+      background-color: var(--card-bg);
+      width: 90%;
+      max-width: 500px;
+      z-index: 1020;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid var(--border-color);
     }
-
-    /* Prevent body scroll when drawer is active */
-    body.drawer-open {
-      overflow: hidden;
+    
+    .modal.open {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      visibility: visible;
     }
+    
+    body.modal-open { overflow: hidden; }
 
-    .drawer-header {
-      padding: 1.75rem 2rem;
-      border-bottom: 1.5px solid #f1f5f9;
+    /* Modal / Drawer Headers */
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      background: var(--card-hover-bg);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
     }
 
-    .drawer-title {
+    .modal-title {
       font-size: 1.25rem;
       font-weight: 800;
-      color: #0f172a;
-      letter-spacing: -0.02em;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .drawer-close {
-      background-color: #f1f5f9;
-      border: none;
-      color: #475569;
-      width: 36px;
-      height: 36px;
+    .close-btn {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background-color 0.15s ease, color 0.15s ease;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .close-btn:hover {
+      background-color: var(--text-primary);
+      color: var(--bg-color);
+      border-color: var(--text-primary);
+      transform: rotate(90deg);
     }
 
-    .drawer-close:hover {
-      background-color: #e2e8f0;
-      color: #0f172a;
-    }
-
-    .drawer-body {
+    /* Modal / Drawer Bodies */
+    .modal-body {
       padding: 2rem;
       overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+      max-height: 80vh;
     }
 
-    .drawer-intro {
+    .modal-intro {
       font-size: 0.95rem;
       color: var(--text-secondary);
+      margin-bottom: 2rem;
       line-height: 1.6;
-      margin-bottom: 0.5rem;
     }
 
-    /* Wishlist list layout */
+    /* Web3Form Styling */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+    
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px var(--blue-light);
+    }
+    
+    .form-submit-btn {
+      margin-top: 0.5rem;
+      background: linear-gradient(135deg, var(--blue-accent), var(--cyan-accent));
+      color: white;
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+      transition: all 0.2s ease;
+    }
+    
+    .form-submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(14, 165, 233, 0.5);
+    }
+
+    /* Wishlist List */
     .wishlist-container {
       display: flex;
       flex-direction: column;
@@ -735,65 +1003,42 @@
 
     .wishlist-item {
       display: flex;
-      gap: 1rem;
+      gap: 1.25rem;
       padding: 1.25rem;
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
       border-radius: 12px;
-      align-items: flex-start;
-      transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+      align-items: center;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
     }
-
+    
     .wishlist-item:hover {
-      transform: translateY(-2px);
-      border-color: #bfdbfe;
-      background-color: #eff6ff;
+      border-color: var(--cyan-accent);
+      transform: translateX(4px);
+      background-color: var(--card-hover-bg);
     }
 
     .wishlist-bullet-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background-color: #dbeafe;
-      color: #2563eb;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background-color: var(--item-bg);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-
-    .wishlist-item:nth-child(2n) .wishlist-bullet-icon {
-      background-color: #ecfeff;
-      color: #0891b2;
-    }
-
-    .wishlist-item:nth-child(3n) .wishlist-bullet-icon {
-      background-color: #fef3c7;
-      color: #d97706;
-    }
-
-    .wishlist-item:nth-child(4n) .wishlist-bullet-icon {
-      background-color: #fef2f2;
-      color: #ef4444;
-    }
-
-    .wishlist-item:nth-child(5n) .wishlist-bullet-icon {
-      background-color: #f0fdf4;
-      color: #16a34a;
+      font-size: 1.5rem;
     }
 
     .wishlist-content {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #1e293b;
-      line-height: 1.5;
-      margin-top: 0.15rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
     }
 
     .wishlist-subtitle {
-      font-size: 0.8125rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
       margin-top: 0.25rem;
       font-weight: 400;
@@ -802,62 +1047,84 @@
 </head>
 
 <body>
+  
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+    <!-- Moon Icon -->
+    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+    <!-- Sun Icon -->
+    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </button>
 
   <div class="wrapper">
 
-    <!-- Header Banner Section -->
+    <!-- Premium Hero Header -->
     <header class="intro">
       <div class="profile-pic">
-        <!-- Smart avatar loading with high-contrast, beautiful gradient SVG fallback -->
         <img src="fforhad.png" alt="Forhad Uddin Ahmed" class="profile-img"
-          onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><defs><linearGradient id=\'g\' x1=\'0%\' y1=\'0%\' x2=\'100%\' y2=\'100%\\\'><stop offset=\'0%\' stop-color=\'%233b82f6\'/><stop offset=\'100%\' stop-color=\'%2306b6d4\'/></linearGradient></defs><rect width=\'100\' height=\'100\' fill=\'url(%23g)\'/><circle cx=\'50\' cy=\'42\' r=\'22\' fill=\'%23ffffff\' opacity=\'0.95\'/><path d=\'M20,88 C20,66 80,66 80,88\' fill=\'%23ffffff\' opacity=\'0.95\'/><text x=\'50\' y=\'46\' font-family=\'Inter,sans-serif\' font-size=\'14\' font-weight=\'bold\' fill=\'%231d4ed8\' text-anchor=\'middle\'>FA</text></svg>'"
+          onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><defs><linearGradient id=\'g\' x1=\'0%\' y1=\'0%\' x2=\'100%\' y2=\'100%\\\'><stop offset=\'0%\' stop-color=\'%234f46e5\'/><stop offset=\'100%\' stop-color=\'%230ea5e9\'/></linearGradient></defs><rect width=\'100\' height=\'100\' fill=\'url(%23g)\'/><circle cx=\'50\' cy=\'42\' r=\'22\' fill=\'%23ffffff\' opacity=\'0.95\'/><path d=\'M20,88 C20,66 80,66 80,88\' fill=\'%23ffffff\' opacity=\'0.95\'/><text x=\'50\' y=\'46\' font-family=\'Inter,sans-serif\' font-size=\'14\' font-weight=\'bold\' fill=\'%231e1b4b\' text-anchor=\'middle\'>FA</text></svg>'"
           referrerpolicy="no-referrer">
       </div>
       <div class="header-info">
         <h1>Forhad Uddin Ahmed</h1>
-        <p class="title-text">Software Engineer | Teacher | Competitive Programmer</p>
+        <p class="title-text">
+          Software Engineer <span>•</span> Teacher <span>•</span> Competitive Programmer
+        </p>
         <div class="header-links">
+          <!-- HIRE ME BUTTON ADDED HERE -->
+          <button id="openContactFormBtn" class="hire-me-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            Hire Me / Contact
+          </button>
+          
           <a href="https://github.com/fforhad" target="_blank" rel="noopener noreferrer" class="link-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-              fill="none">
-              <path
-                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+            <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
             </svg>
             GitHub
           </a>
           <a href="https://leetcode.com/fforhad" target="_blank" rel="noopener noreferrer" class="link-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-              fill="none">
+            <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
               <polyline points="16 18 22 12 16 6" />
               <polyline points="8 6 2 12 8 18" />
             </svg>
             LeetCode
           </a>
-          <a href="https://scholar.google.com/citations?user=hIcd4nkAAAAJ&hl=en&oi=ao" target="_blank"
-            rel="noopener noreferrer" class="link-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-              fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <a href="https://scholar.google.com/citations?user=hIcd4nkAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer" class="link-pill">
+            <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 10v6"></path>
               <path d="M2 10l10-5 10 5-10 5z"></path>
               <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
             </svg>
-            Google Scholar
+            Scholar
           </a>
         </div>
       </div>
     </header>
 
-    <!-- Dynamic Main 2-Column Responsive Layout -->
+    <!-- Main Layout -->
     <div class="grid-layout">
 
-      <!-- Left Side Dashboard Panels -->
+      <!-- Left Sidebar -->
       <div class="column">
-
-        <!-- Objective Block -->
+        <!-- Objective -->
         <section class="card">
           <h2 class="section-title">
-            <svg class="section-icon svg-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
-              stroke-width="2" fill="none">
+            <svg class="section-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
             Objective
@@ -871,11 +1138,10 @@
           </p>
         </section>
 
-        <!-- Competitive Programming Block -->
+        <!-- Competitive Programming -->
         <section class="card">
           <h2 class="section-title">
-            <svg class="section-icon svg-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
-              stroke-width="2" fill="none">
+            <svg class="section-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
               <circle cx="12" cy="8" r="7" />
               <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
             </svg>
@@ -888,14 +1154,14 @@
             </div>
             <div class="cp-achievements">
               <div class="cp-item">
-                <span class="cp-indicator"></span>
+                <span class="cp-indicator">CP</span>
                 <div class="cp-text">
                   <div class="team">BAIUST_OneLastTime</div>
                   <div class="contest">ICPC Dhaka Regionals (2021–2023)</div>
                 </div>
               </div>
               <div class="cp-item">
-                <span class="cp-indicator"></span>
+                <span class="cp-indicator">CP</span>
                 <div class="cp-text">
                   <div class="team">Team BAIUST_Falcon</div>
                   <div class="contest">IUPC at CUET, SUST</div>
@@ -905,11 +1171,10 @@
           </div>
         </section>
 
-        <!-- Publications Block -->
+        <!-- Publications -->
         <section class="card">
           <h2 class="section-title">
-            <svg class="section-icon svg-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
-              stroke-width="2" fill="none">
+            <svg class="section-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 3.5A2.5 2.5 0 0 1 6.5 6H20v20H6.5A2.5 2.5 0 0 1 4 23.5V3.5z" />
             </svg>
             Publications
@@ -917,8 +1182,7 @@
           <div class="pub-list">
             <a href="https://doi.org/10.35784/iapgos.5657" target="_blank" rel="noopener noreferrer" class="pub-item">
               <div class="pub-icon">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-                  fill="none">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                 </svg>
@@ -928,11 +1192,9 @@
                 <div class="pub-journal">IAPGOS Journal</div>
               </div>
             </a>
-            <a href="https://ieeexplore.ieee.org/document/10303490" target="_blank" rel="noopener noreferrer"
-              class="pub-item">
+            <a href="https://ieeexplore.ieee.org/document/10303490" target="_blank" rel="noopener noreferrer" class="pub-item">
               <div class="pub-icon">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-                  fill="none">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                 </svg>
@@ -942,11 +1204,9 @@
                 <div class="pub-journal">ICICT4SD2023</div>
               </div>
             </a>
-            <a href="https://ieeexplore.ieee.org/document/10440991" target="_blank" rel="noopener noreferrer"
-              class="pub-item">
+            <a href="https://ieeexplore.ieee.org/document/10440991" target="_blank" rel="noopener noreferrer" class="pub-item">
               <div class="pub-icon">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-                  fill="none">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                 </svg>
@@ -959,21 +1219,18 @@
           </div>
         </section>
 
-        <!-- Contact Details Card -->
+        <!-- Contact Details -->
         <section class="card">
           <h2 class="section-title">
-            <svg class="section-icon svg-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
-              stroke-width="2" fill="none">
-              <path
-                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            <svg class="section-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
             </svg>
             Get In Touch
           </h2>
           <div class="contact-grid">
             <a href="mailto:forhad.uddin9028@gmail.com" class="contact-item">
               <div class="contact-icon email">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-                  fill="none">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                   <polyline points="22,6 12,13 2,6" />
                 </svg>
@@ -985,10 +1242,8 @@
             </a>
             <a href="https://github.com/fforhad" target="_blank" rel="noopener noreferrer" class="contact-item">
               <div class="contact-icon github">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-                  fill="none">
-                  <path
-                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                 </svg>
               </div>
               <div class="contact-detail">
@@ -998,8 +1253,7 @@
             </a>
             <a href="https://leetcode.com/fforhad" target="_blank" rel="noopener noreferrer" class="contact-item">
               <div class="contact-icon leetcode">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-                  fill="none">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                   <polyline points="16 18 22 12 16 6" />
                   <polyline points="8 6 2 12 8 18" />
                 </svg>
@@ -1009,15 +1263,12 @@
                 <div class="value">fforhad</div>
               </div>
             </a>
-            <a href="https://www.stopstalk.com/user/profile/FForhad" target="_blank" rel="noopener noreferrer"
-              class="contact-item">
+            <a href="https://www.stopstalk.com/user/profile/FForhad" target="_blank" rel="noopener noreferrer" class="contact-item">
               <div class="contact-icon stopstalk">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-                  fill="none">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                   <circle cx="12" cy="12" r="10" />
                   <line x1="2" y1="12" x2="22" y2="12" />
-                  <path
-                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                 </svg>
               </div>
               <div class="contact-detail">
@@ -1026,34 +1277,29 @@
               </div>
             </a>
             <div class="contact-item">
-              <div class="contact-icon google-scholar" style="background-color: #e0f2fe; color: #0284c7;">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
-                  fill="none">
+              <div class="contact-icon google-scholar">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                   <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
                   <path d="M6 12v5c0 2 2.5 3 6 3s6-1 6-3v-5" />
                 </svg>
               </div>
               <div class="contact-detail">
                 <div class="label">Google Scholar</div>
-                <div class="value"><strong>Google Scholar:</strong> <a
-                    href="https://scholar.google.com/citations?user=hIcd4nkAAAAJ&hl=en&oi=ao" target="_blank"
-                    rel="noopener noreferrer" style="color: var(--text-primary); text-decoration: underline;">Forhad</a>
+                <div class="value">
+                  <a href="https://scholar.google.com/citations?user=hIcd4nkAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer">View Forhad's Profile</a>
                 </div>
               </div>
             </div>
           </div>
         </section>
-
       </div>
 
-      <!-- Right Side Main Timelines & Technical Categorized Grids -->
+      <!-- Right Main Content -->
       <div class="column">
-
-        <!-- Experience Section -->
+        <!-- Professional Experience -->
         <section class="card">
           <h2 class="section-title">
-            <svg class="section-icon svg-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
-              stroke-width="2" fill="none">
+            <svg class="section-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
               <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
               <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
             </svg>
@@ -1061,9 +1307,38 @@
           </h2>
 
           <div class="timeline">
-
-            <!-- Lecturer Job -->
+            <!-- InitZone REORDERED TO THE TOP -->
             <div class="timeline-item active-job">
+              <span class="timeline-badge"></span>
+              <div class="timeline-header">
+                <h3 class="job-title">Lead Software Engineer</h3>
+                <span class="job-company">InitZone (Own Startup)</span>
+              </div>
+              <div class="job-meta">
+                <span class="job-meta-item">
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                  Mymensingh, Bangladesh
+                </span>
+                <span class="job-meta-item">
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                  Apr 2025 – Present
+                </span>
+              </div>
+              <p class="job-desc">
+                Built <strong>Portulika</strong>, a full-stack book reading/writing platform. Led enterprise software design, RESTful API architecture, and scalable database schemas.
+              </p>
+              <div class="tech-box">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Django</span>
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">Next.js</span>
+                <span class="tech-tag">Redis</span>
+                <span class="tech-tag">PostgreSQL</span>
+              </div>
+            </div>
+
+            <!-- Lecturer (Moved Below InitZone) -->
+            <div class="timeline-item">
               <span class="timeline-badge"></span>
               <div class="timeline-header">
                 <h3 class="job-title">Lecturer</h3>
@@ -1071,27 +1346,16 @@
               </div>
               <div class="job-meta">
                 <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
                   Cumilla, Bangladesh
                 </span>
                 <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
-                  Nov 2025 – Present
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                  Nov 2025 – May 2026
                 </span>
               </div>
               <p class="job-desc">
-                Conducted university-level courses including Data Structures, Algorithms, Discrete Mathematics, and
-                Structured Programming Languages.
+                Conducted university-level courses including Data Structures, Algorithms, Discrete Mathematics, and Structured Programming Languages.
               </p>
               <div class="tech-box">
                 <span class="tech-tag">Data Structures</span>
@@ -1101,49 +1365,7 @@
               </div>
             </div>
 
-            <!-- Job 1 -->
-            <div class="timeline-item active-job">
-              <span class="timeline-badge"></span>
-              <div class="timeline-header">
-                <h3 class="job-title">Full-stack Software Engineer</h3>
-                <span class="job-company">InitZone (Own Startup)</span>
-              </div>
-              <div class="job-meta">
-                <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                  Mymensingh, Bangladesh
-                </span>
-                <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
-                  Apr 2025 – Present
-                </span>
-              </div>
-              <p class="job-desc">
-                Built <strong>Portulika</strong>, a full-stack book reading/writing platform. Led enterprise software
-                design, RESTful API architecture, and scalable database schemas.
-              </p>
-              <div class="tech-box">
-                <span class="tech-tag">Python</span>
-                <span class="tech-tag">Django</span>
-                <span class="tech-tag">JavaScript</span>
-                <span class="tech-tag">React</span>
-                <span class="tech-tag">Next.js</span>
-                <span class="tech-tag">Redis</span>
-                <span class="tech-tag">PostgreSQL</span>
-              </div>
-            </div>
-
-            <!-- Job 2 -->
+            <!-- Systemica -->
             <div class="timeline-item">
               <span class="timeline-badge"></span>
               <div class="timeline-header">
@@ -1152,40 +1374,27 @@
               </div>
               <div class="job-meta">
                 <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
                   Remote, Ulm, Germany
                 </span>
                 <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
                   Feb 2025 – Apr 2025
                 </span>
               </div>
               <p class="job-desc">
-                Engineered continuous delivery pipelines with GitHub Actions. Developed isolated observability
-                containers and built backend asynchronous data streaming APIs.
+                Engineered continuous delivery pipelines with GitHub Actions. Developed isolated observability containers and built backend asynchronous data streaming APIs.
               </p>
               <div class="tech-box">
                 <span class="tech-tag">FastAPI</span>
-                <span class="tech-tag">Python</span>
-                <span class="tech-tag">Redis</span>
-                <span class="tech-tag">GitHub Actions</span>
                 <span class="tech-tag">Docker</span>
+                <span class="tech-tag">GitHub Actions</span>
                 <span class="tech-tag">Prometheus</span>
                 <span class="tech-tag">Grafana</span>
               </div>
             </div>
 
-            <!-- Job 3 -->
+            <!-- EDGE -->
             <div class="timeline-item">
               <span class="timeline-badge"></span>
               <div class="timeline-header">
@@ -1194,27 +1403,16 @@
               </div>
               <div class="job-meta">
                 <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
                   BAIUST, Cumilla
                 </span>
                 <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
                   June 2024 – May 2025
                 </span>
               </div>
               <p class="job-desc">
-                Conducted the CBI-013: Python (Django) corporate software track under the government's flagship EDGE
-                project.
+                Conducted the CBI-013: Python (Django) corporate software track under the government's flagship EDGE project.
               </p>
               <div class="tech-box">
                 <span class="tech-tag">Python</span>
@@ -1222,7 +1420,7 @@
               </div>
             </div>
 
-            <!-- Job 4 -->
+            <!-- Sicunet -->
             <div class="timeline-item">
               <span class="timeline-badge"></span>
               <div class="timeline-header">
@@ -1231,46 +1429,32 @@
               </div>
               <div class="job-meta">
                 <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
                   Dhaka, Bangladesh
                 </span>
                 <span class="job-meta-item">
-                  <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"
-                    class="svg-icon">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
                   Nov 2023 – Feb 2025
                 </span>
               </div>
               <p class="job-desc">
-                Worked closely on Jupiter Cloud and Jupiter License services. Engineered core payment gateway services
-                and redesigned critical database nodes to cut system latency by 30%.
+                Worked closely on Jupiter Cloud and Jupiter License services. Engineered core payment gateway services and redesigned critical database nodes to cut system latency by 30%.
               </p>
               <div class="tech-box">
                 <span class="tech-tag">Python</span>
                 <span class="tech-tag">Django</span>
-                <span class="tech-tag">JavaScript</span>
                 <span class="tech-tag">ReactJS</span>
                 <span class="tech-tag">MySQL</span>
-                <span class="tech-tag">SQLite3</span>
               </div>
             </div>
 
           </div>
         </section>
 
-        <!-- Technical Skills Categorized Grid Section -->
+        <!-- Technical Skills -->
         <section class="card">
           <h2 class="section-title">
-            <svg class="section-icon svg-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
-              stroke-width="2" fill="none">
+            <svg class="section-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
               <polygon points="12 2 2 7 12 12 22 7 12 2" />
               <polyline points="2 17 12 22 22 17" />
               <polyline points="2 12 12 17 22 12" />
@@ -1279,17 +1463,9 @@
           </h2>
 
           <div class="skills-grid">
-
-            <!-- Backend -->
             <div class="skills-category">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-                  <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-                  <line x1="6" y1="6" x2="6.01" y2="6" />
-                  <line x1="6" y1="18" x2="6.01" y2="18" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="8" rx="2" ry="2" /><rect x="2" y="14" width="20" height="8" rx="2" ry="2" /><line x1="6" y1="6" x2="6.01" y2="6" /><line x1="6" y1="18" x2="6.01" y2="18" /></svg>
                 Back-end
               </h3>
               <div class="skills-list">
@@ -1299,15 +1475,9 @@
               </div>
             </div>
 
-            <!-- Frontend -->
             <div class="skills-category">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                  <line x1="9" y1="3" x2="9" y2="21" />
-                  <line x1="9" y1="9" x2="21" y2="9" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="9" y1="3" x2="9" y2="21" /><line x1="9" y1="9" x2="21" y2="9" /></svg>
                 Front-end
               </h3>
               <div class="skills-list">
@@ -1316,14 +1486,9 @@
               </div>
             </div>
 
-            <!-- Programming Languages -->
             <div class="skills-category">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <polyline points="16 18 22 12 16 6" />
-                  <polyline points="8 6 2 12 8 18" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>
                 Programming
               </h3>
               <div class="skills-list">
@@ -1333,15 +1498,9 @@
               </div>
             </div>
 
-            <!-- Databases -->
             <div class="skills-category">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <ellipse cx="12" cy="5" rx="9" ry="3" />
-                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-                  <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" /><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" /></svg>
                 Databases
               </h3>
               <div class="skills-list">
@@ -1351,32 +1510,22 @@
               </div>
             </div>
 
-            <!-- DevOps & Tools -->
             <div class="skills-category">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>
                 DevOps & Tools
               </h3>
               <div class="skills-list">
                 <span class="skill-badge">Docker</span>
                 <span class="skill-badge">GitHub Actions</span>
-                <span class="skill-badge">Git</span>
-                <span class="skill-badge">GitHub</span>
+                <span class="skill-badge">Git & GitHub</span>
                 <span class="skill-badge">Bitbucket</span>
               </div>
             </div>
 
-            <!-- AI / ML -->
             <div class="skills-category">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <path
-                    d="M12 2a10 10 0 0 1 7.54 16.59c-.4.4-.77.92-.85 1.48L18 22H6l-.69-1.93c-.08-.56-.45-1.08-.85-1.48A10 10 0 0 1 12 2z" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2a10 10 0 0 1 7.54 16.59c-.4.4-.77.92-.85 1.48L18 22H6l-.69-1.93c-.08-.56-.45-1.08-.85-1.48A10 10 0 0 1 12 2z" /></svg>
                 AI / ML
               </h3>
               <div class="skills-list">
@@ -1385,15 +1534,9 @@
               </div>
             </div>
 
-            <!-- Operating Systems -->
             <div class="skills-category">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                  <line x1="8" y1="21" x2="16" y2="21" />
-                  <line x1="12" y1="17" x2="12" y2="21" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>
                 OS
               </h3>
               <div class="skills-list">
@@ -1402,16 +1545,9 @@
               </div>
             </div>
 
-            <!-- Soft Skills -->
             <div class="skills-category">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
                 Soft Skills
               </h3>
               <div class="skills-list">
@@ -1421,13 +1557,9 @@
               </div>
             </div>
 
-            <!-- Languages -->
             <div class="skills-category" style="grid-column: 1 / -1;">
               <h3 class="skills-category-title">
-                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                  class="svg-icon">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                 Languages
               </h3>
               <div class="skills-list">
@@ -1435,201 +1567,220 @@
                 <span class="skill-badge">English (Professional)</span>
               </div>
             </div>
-
           </div>
         </section>
 
-        <!-- Extracurricular Activities Block -->
+        <!-- Extracurricular -->
         <section class="card">
           <h2 class="section-title">
-            <svg class="section-icon svg-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor"
-              stroke-width="2" fill="none">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            <svg class="section-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
             Extracurricular Activities
           </h2>
           <div class="extra-list">
             <div class="extra-item">
-              <span class="extra-dot"></span>
+              <span class="extra-dot">1</span>
               <span class="extra-text"><strong>General Secretary</strong>, BAIUST Computer Club</span>
             </div>
             <div class="extra-item">
-              <span class="extra-dot"></span>
+              <span class="extra-dot">2</span>
               <span class="extra-text">Organized Google I/O Extended & EMK Center community events</span>
             </div>
             <div class="extra-item">
-              <span class="extra-dot"></span>
+              <span class="extra-dot">3</span>
               <span class="extra-text">Conducted continuous tech training workshops on competitive programming</span>
             </div>
           </div>
         </section>
-
       </div>
 
     </div>
 
-    <!-- Sticky Footer -->
+    <!-- Footer -->
     <footer class="footer">
-      <p>&copy; 2026 Forhad Uddin Ahmed. Hosted directly via GitHub Pages. Built to represent engineering excellence.
-      </p>
+      <p>&copy; 2026 Forhad Uddin Ahmed. Hosted directly via GitHub Pages. Built to represent engineering excellence.</p>
     </footer>
 
   </div>
 
-  <!-- Wishlist Floating Action Button -->
+  <!-- Wishlist FAB -->
   <button id="wishlistFab" class="wishlist-fab" aria-label="Open Wishlist">
     <span>🎁</span>
     <span>My Wishlist</span>
   </button>
 
-  <!-- Drawer Overlay Backdrop -->
-  <div id="drawerOverlay" class="drawer-overlay"></div>
+  <!-- Global Backdrop Overlay -->
+  <div id="globalOverlay" class="overlay"></div>
 
-  <!-- Drawer Component -->
-  <div id="wishlistDrawer" class="drawer">
-    <div class="drawer-header">
-      <span class="drawer-title">Things That Make Me Happy 🎁</span>
-      <button id="drawerClose" class="drawer-close" aria-label="Close Wishlist">
-        <svg class="svg-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5"
-          fill="none">
+  <!-- HIRE ME MODAL -->
+  <div id="contactModal" class="modal">
+    <div class="modal-header">
+      <span class="modal-title">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" style="color: var(--blue-accent);">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+        </svg>
+        Let's Work Together
+      </span>
+      <button id="closeContactModalBtn" class="close-btn" aria-label="Close Contact Form">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
     </div>
-    <div class="drawer-body">
-      <p class="drawer-intro">A little wishlist of goals I want to achieve, things that bring me joy, and items I'd be
-        absolutely thrilled to receive as a gift!</p>
+    <div class="modal-body">
+      <p class="modal-intro">Feel free to reach out for collaborations, freelance projects, or full-time opportunities. I'll get back to you as soon as possible.</p>
+      
+      <!-- User Provided Form Integration -->
+      <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+        <!-- Hidden Access Key -->
+        <input type="hidden" name="access_key" value="8dda4e7c-5b86-49bc-8805-aa59bf8992cd">
+        
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required placeholder="John Doe">
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required placeholder="john@example.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="message">Your Message</label>
+          <textarea id="message" name="message" required placeholder="Hi Forhad, I'd like to discuss a project..."></textarea>
+        </div>
+        
+        <button type="submit" class="form-submit-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- WISHLIST DRAWER -->
+  <div id="wishlistDrawer" class="drawer">
+    <div class="modal-header">
+      <span class="modal-title">Things That Make Me Happy 🎁</span>
+      <button id="closeDrawerBtn" class="close-btn" aria-label="Close Wishlist">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-intro">A little wishlist of goals I want to achieve, things that bring me joy, and items I'd be absolutely thrilled to receive as a gift!</p>
 
       <div class="wishlist-container">
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">🏎️</div>
-          <div class="wishlist-content">
-            Hot Wheels
-            <div class="wishlist-subtitle">Starting or growing the car collection</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">🏎️</div>
+          <div><div class="wishlist-content">Hot Wheels</div><div class="wishlist-subtitle">Starting or growing the car collection</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">📚</div>
-          <div class="wishlist-content">
-            System Design & SE Books
-            <div class="wishlist-subtitle">Always eager to learn and level up</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">📚</div>
+          <div><div class="wishlist-content">System Design & SE Books</div><div class="wishlist-subtitle">Always eager to learn and level up</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">🖱️</div>
-          <div class="wishlist-content">
-            Nice Printed Mouse
-            <div class="wishlist-subtitle">To add some personality to the desk setup</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">🖱️</div>
+          <div><div class="wishlist-content">Nice Printed Mouse</div><div class="wishlist-subtitle">To add some personality to the desk setup</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">⌨️</div>
-          <div class="wishlist-content">
-            Mechanical Keyboard
-            <div class="wishlist-subtitle">Clicky switches preferred!</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">⌨️</div>
+          <div><div class="wishlist-content">Mechanical Keyboard</div><div class="wishlist-subtitle">Clicky switches preferred!</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">💡</div>
-          <div class="wishlist-content">
-            Lightbar for Monitor
-            <div class="wishlist-subtitle">Better lighting for late-night coding</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">💡</div>
+          <div><div class="wishlist-content">Lightbar for Monitor</div><div class="wishlist-subtitle">Better lighting for late-night coding</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">🕋</div>
-          <div class="wishlist-content">
-            Hajj
-            <div class="wishlist-subtitle">A lifelong spiritual goal</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">🕋</div>
+          <div><div class="wishlist-content">Hajj</div><div class="wishlist-subtitle">A lifelong spiritual goal</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">🎓</div>
-          <div class="wishlist-content">
-            PhD
-            <div class="wishlist-subtitle">Advancing my research and academic career</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">🎓</div>
+          <div><div class="wishlist-content">PhD</div><div class="wishlist-subtitle">Advancing my research and academic career</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">✈️</div>
-          <div class="wishlist-content">
-            Tour with Teams
-            <div class="wishlist-subtitle">Traveling, bonding, and making memories</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">✈️</div>
+          <div><div class="wishlist-content">Tour with Teams</div><div class="wishlist-subtitle">Traveling, bonding, and making memories</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">🚙</div>
-          <div class="wishlist-content">
-            Buy a Car
-            <div class="wishlist-subtitle">For personal and family travel</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">🚙</div>
+          <div><div class="wishlist-content">Buy a Car</div><div class="wishlist-subtitle">For personal and family travel</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">🤝</div>
-          <div class="wishlist-content">
-            Connection with Tech People
-            <div class="wishlist-subtitle">Networking with inspiring individuals</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">🤝</div>
+          <div><div class="wishlist-content">Connection with Tech People</div><div class="wishlist-subtitle">Networking with inspiring individuals</div></div>
         </div>
-
-        <div class="wishlist-item">
-          <div class="wishlist-bullet-icon">🔓</div>
-          <div class="wishlist-content">
-            Help Getting Back My LinkedIn
-            <div class="wishlist-subtitle">Much appreciated if anyone can assist!</div>
-          </div>
+        <div class="wishlist-item"><div class="wishlist-bullet-icon">🔓</div>
+          <div><div class="wishlist-content">Help Getting Back My LinkedIn</div><div class="wishlist-subtitle">Much appreciated if anyone can assist!</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Toggle Interactivity Script -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const fab = document.getElementById('wishlistFab');
-      const drawer = document.getElementById('wishlistDrawer');
-      const overlay = document.getElementById('drawerOverlay');
-      const closeBtn = document.getElementById('drawerClose');
+      // --- Theme Toggle Logic ---
+      const themeToggle = document.getElementById('themeToggle');
+      const root = document.documentElement;
+      
+      const savedTheme = localStorage.getItem('portfolio-theme');
+      if (savedTheme === 'dark') {
+        root.setAttribute('data-theme', 'dark');
+      } else if (savedTheme === 'light') {
+        root.removeAttribute('data-theme');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        root.setAttribute('data-theme', 'dark');
+      }
+
+      themeToggle.addEventListener('click', () => {
+        if (root.getAttribute('data-theme') === 'dark') {
+          root.removeAttribute('data-theme');
+          localStorage.setItem('portfolio-theme', 'light');
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          localStorage.setItem('portfolio-theme', 'dark');
+        }
+      });
+
+      // --- Modals & Drawers Logic ---
+      const overlay = document.getElementById('globalOverlay');
+      
+      // Wishlist UI
+      const wishlistFab = document.getElementById('wishlistFab');
+      const wishlistDrawer = document.getElementById('wishlistDrawer');
+      const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+
+      // Contact Form UI
+      const openContactFormBtn = document.getElementById('openContactFormBtn');
+      const contactModal = document.getElementById('contactModal');
+      const closeContactModalBtn = document.getElementById('closeContactModalBtn');
 
       function openDrawer() {
-        drawer.classList.add('open');
+        wishlistDrawer.classList.add('open');
         overlay.classList.add('open');
-        document.body.classList.add('drawer-open');
+        document.body.classList.add('modal-open');
       }
 
-      function closeDrawer() {
-        drawer.classList.remove('open');
+      function openContactModal() {
+        contactModal.classList.add('open');
+        overlay.classList.add('open');
+        document.body.classList.add('modal-open');
+      }
+
+      function closeAllModals() {
+        wishlistDrawer.classList.remove('open');
+        contactModal.classList.remove('open');
         overlay.classList.remove('open');
-        document.body.classList.remove('drawer-open');
+        document.body.classList.remove('modal-open');
       }
 
-      // Click Handlers
-      fab.addEventListener('click', openDrawer);
-      closeBtn.addEventListener('click', closeDrawer);
-      overlay.addEventListener('click', closeDrawer);
+      // Event Listeners
+      wishlistFab.addEventListener('click', openDrawer);
+      openContactFormBtn.addEventListener('click', openContactModal);
+      
+      closeDrawerBtn.addEventListener('click', closeAllModals);
+      closeContactModalBtn.addEventListener('click', closeAllModals);
+      overlay.addEventListener('click', closeAllModals);
 
-      // Escape key handler
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && drawer.classList.contains('open')) {
-          closeDrawer();
+        if (e.key === 'Escape') {
+          closeAllModals();
         }
       });
     });
   </script>
 
 </body>
-
 </html>
