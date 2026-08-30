@@ -20,6 +20,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Three.js (High Performance 3D WebGL Library) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <style>
     /* ==========================================================================
        1. DESIGN TOKENS & THEMES
@@ -178,16 +181,36 @@
     ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
 
     /* ==========================================================================
-       2. CARD HOVER TRANSITIONS
+       2. 3D CARD HOVER & TILT TRANSITIONS
        ========================================================================== */
-    .spotlight-card {
+    .spotlight-card, .bento-card, .project-card, .card, .cs-playground-card {
       position: relative;
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.25s ease;
+    }
+
+    .spotlight-card {
       overflow: hidden;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
-                  box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
-                  border-color 0.25s ease;
+    }
+
+    .card-3d-glare {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: 2;
+      mix-blend-mode: overlay;
+    }
+
+    .bento-icon, .profile-badge, .hero-actions-row, .status-badge, .project-badge-pill, .hero-3d-badge {
+      transform: translateZ(24px);
     }
 
     /* ==========================================================================
@@ -313,21 +336,27 @@
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-primary);
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       box-shadow: var(--shadow-sm);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-style: preserve-3d;
+      perspective: 400px;
     }
 
     .theme-toggle-btn:hover {
-      transform: rotate(20deg) scale(1.1);
+      transform: rotate(18deg) scale(1.1);
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+    }
+
+    .theme-toggle-btn.flipping {
+      transform: rotateY(180deg) scale(1.15);
     }
 
     [data-theme="dark"] .moon-icon { display: none; }
@@ -363,14 +392,15 @@
     }
 
     /* ==========================================================================
-       4. HERO HEADER SECTION (PROMINENT LARGE PHOTO WITH 3D TILT HOVER)
+       4. HERO HEADER SECTION (PROMINENT LARGE PHOTO WITH 3D TILT HOVER & 3D CORE)
        ========================================================================== */
     .intro {
       background: var(--hero-gradient);
       color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 3.5rem;
+      justify-content: space-between;
+      gap: 2.5rem;
       padding: 3.5rem;
       border-radius: 24px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
@@ -379,7 +409,8 @@
       margin-top: 1rem;
       border: 1px solid rgba(255, 255, 255, 0.08);
       animation: heroFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      perspective: 1000px;
+      perspective: 1200px;
+      transform-style: preserve-3d;
     }
 
     @keyframes heroFadeIn {
@@ -418,17 +449,138 @@
       100% { transform: scale(1.3) translate(30px, -25px); opacity: 0.4; }
     }
 
-    /* LARGE, CRISP PROFILE PIC WITH HOVER TILT */
-    .profile-pic {
+    /* 3D AVATAR STAGE & HOLOGRAPHIC ORBITAL RINGS */
+    .hero-avatar-stage {
       position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-      width: 250px;
-      height: 270px;
+      width: 260px;
+      height: 280px;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: floatAvatar 6s ease-in-out infinite;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      flex-shrink: 0;
+      z-index: 2;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      transform-style: preserve-3d;
+    }
+
+    .orbit-ring-1 {
+      width: 280px;
+      height: 280px;
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-top-color: var(--accent-cyan);
+      border-right-color: transparent;
+      animation: orbitSpin1 14s linear infinite;
+      transform: rotateX(65deg) rotateY(15deg);
+    }
+
+    .orbit-ring-2 {
+      width: 300px;
+      height: 300px;
+      border: 1.5px solid rgba(129, 140, 248, 0.3);
+      border-bottom-color: var(--accent-purple);
+      border-left-color: transparent;
+      animation: orbitSpin2 18s linear infinite reverse;
+      transform: rotateX(72deg) rotateY(-25deg);
+    }
+
+    .orbit-ring-3 {
+      width: 250px;
+      height: 250px;
+      border: 1px dashed rgba(45, 212, 191, 0.35);
+      animation: orbitSpin1 24s linear infinite;
+      transform: rotateX(55deg) rotateY(40deg);
+    }
+
+    @keyframes orbitSpin1 {
+      0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
+      100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
+    }
+
+    @keyframes orbitSpin2 {
+      0% { transform: rotateX(72deg) rotateY(-25deg) rotateZ(0deg); }
+      100% { transform: rotateX(72deg) rotateY(-25deg) rotateZ(360deg); }
+    }
+
+    /* 3D Floating Micro-Badges */
+    .hero-3d-badge {
+      position: absolute;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 9999px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      pointer-events: auto;
+      z-index: 6;
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+
+    .hero-3d-badge:hover {
+      transform: scale(1.12) translateZ(40px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.6);
+    }
+
+    .hero-3d-badge.badge-top-right {
+      top: 8px;
+      right: -24px;
+      animation: float3dBadge1 5s ease-in-out infinite;
+    }
+
+    .hero-3d-badge.badge-bottom-left {
+      bottom: 10px;
+      left: -20px;
+      animation: float3dBadge2 6s ease-in-out infinite 0.8s;
+    }
+
+    .hero-3d-badge.badge-top-left {
+      top: 15px;
+      left: -28px;
+      animation: float3dBadge3 5.5s ease-in-out infinite 1.6s;
+    }
+
+    @keyframes float3dBadge1 {
+      0%, 100% { transform: translateY(0) translateZ(26px); }
+      50% { transform: translateY(-8px) translateZ(36px); }
+    }
+
+    @keyframes float3dBadge2 {
+      0%, 100% { transform: translateY(0) translateZ(28px); }
+      50% { transform: translateY(7px) translateZ(38px); }
+    }
+
+    @keyframes float3dBadge3 {
+      0%, 100% { transform: translateY(0) translateZ(22px); }
+      50% { transform: translateY(-6px) translateZ(32px); }
+    }
+
+    /* LARGE, CRISP PROFILE PIC WITH HOVER TILT */
+    .profile-pic {
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      width: 230px;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
     }
@@ -448,20 +600,10 @@
       transition: transform 0.4s ease, opacity 0.4s ease;
     }
 
-    .profile-pic:hover {
-      animation-play-state: paused;
-      transform: scale(1.05) translateY(-6px);
-    }
-
     .profile-pic:hover::before {
       transform: scale(1.25);
       opacity: 1;
       filter: blur(24px);
-    }
-
-    @keyframes floatAvatar {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
     }
 
     .profile-img {
@@ -476,6 +618,7 @@
       filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5)) contrast(1.04) brightness(1.02);
       transition: filter 0.35s ease, transform 0.35s ease;
       display: block;
+      transform: translateZ(30px);
     }
 
     .profile-pic:hover .profile-img {
@@ -497,13 +640,96 @@
       justify-content: center;
       border: 2.5px solid rgba(15, 23, 42, 0.95);
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-      z-index: 2;
+      z-index: 4;
+      transform: translateZ(48px);
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
     }
 
     .profile-pic:hover .profile-badge {
-      transform: scale(1.25) rotate(15deg);
+      transform: translateZ(56px) scale(1.25) rotate(15deg);
       box-shadow: 0 0 16px rgba(16, 185, 129, 0.7);
+    }
+
+    /* 3D DISTRIBUTED CORE INTERACTIVE WIDGET */
+    .hero-3d-core-container {
+      position: relative;
+      width: 220px;
+      height: 270px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(14, 20, 36, 0.55);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 20px;
+      padding: 0.85rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(56, 189, 248, 0.06);
+      transform-style: preserve-3d;
+      transform: translateZ(24px);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      z-index: 2;
+    }
+
+    .hero-3d-core-container:hover {
+      border-color: rgba(56, 189, 248, 0.55);
+      box-shadow: 0 20px 45px -10px rgba(56, 189, 248, 0.25), inset 0 0 25px rgba(56, 189, 248, 0.12);
+      transform: translateZ(32px) scale(1.02);
+    }
+
+    .hero-3d-canvas-wrap {
+      width: 100%;
+      height: 180px;
+      position: relative;
+    }
+
+    .hero-3d-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+
+    .hero-3d-canvas:active {
+      cursor: grabbing;
+    }
+
+    .hero-3d-hud {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      background: rgba(8, 12, 22, 0.65);
+      padding: 0.45rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hud-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hud-indicator {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: hudBlink 1.8s infinite;
+      margin-right: 0.3rem;
+    }
+
+    @keyframes hudBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.8); }
     }
 
     .header-info {
@@ -701,6 +927,19 @@
       border-color: var(--accent-cyan);
     }
 
+    @media (max-width: 1100px) {
+      .intro {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+      }
+      .hero-3d-core-container {
+        width: 100%;
+        max-width: 320px;
+        margin-top: 0.5rem;
+      }
+    }
+
     @media (max-width: 860px) {
       .intro {
         flex-direction: column;
@@ -708,9 +947,12 @@
         padding: 2.5rem 1.5rem;
         gap: 2rem;
       }
+      .hero-avatar-stage {
+        margin: 0 auto;
+      }
       .profile-pic {
-        width: 220px;
-        height: 230px;
+        width: 210px;
+        height: 225px;
         margin: 0 auto;
       }
       .header-info h1 { font-size: 2.2rem; }
@@ -718,6 +960,10 @@
       .hero-actions-row { justify-content: center; }
       .header-links { justify-content: center; }
       .status-badge { margin: 0 auto 0.85rem; }
+      .orbit-ring-1 { width: 240px; height: 240px; }
+      .orbit-ring-2 { width: 260px; height: 260px; }
+      .orbit-ring-3 { width: 220px; height: 220px; }
+      .hero-3d-badge.badge-top-left { display: none; }
     }
 
     /* ==========================================================================
@@ -1176,6 +1422,66 @@
       font-size: 0.8rem;
       color: var(--text-primary);
       margin-top: 0.5rem;
+    }
+
+    /* 3D Distributed Cluster Simulator (Playground Panel 6) */
+    .cluster-3d-viewport {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #0e1628 0%, #060912 100%);
+      border: 1px solid var(--card-border);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .cluster-3d-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+
+    .cluster-3d-canvas:active {
+      cursor: grabbing;
+    }
+
+    .cluster-3d-hint {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      pointer-events: none;
+    }
+
+    .cluster-node-tooltip {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(14, 20, 36, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 8px;
+      padding: 0.5rem 0.85rem;
+      font-size: 0.75rem;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .cluster-node-tooltip.visible {
+      opacity: 1;
     }
 
     /* ==========================================================================
@@ -1818,16 +2124,18 @@
     .contact-detail .label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
     .contact-detail .value { font-size: 0.925rem; font-weight: 600; color: var(--text-primary); margin-top: 0.1rem; }
 
-    /* Reveal */
+    /* 3D Dynamic Section Reveal */
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: perspective(1100px) rotateX(6deg) translateY(24px) scale(0.99);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: center top;
+      will-change: opacity, transform;
     }
 
     .reveal.is-visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: perspective(1100px) rotateX(0deg) translateY(0) scale(1);
     }
 
     .delay-1 { transition-delay: 0.12s; }
@@ -2197,14 +2505,32 @@
          HERO SECTION (LARGE PROMINENT PHOTO WITH 3D TILT HOVER & EXPANDED TITLES)
          ========================================================================== -->
     <header class="intro spotlight-card" id="hero">
-      <div class="profile-pic" id="heroProfilePic">
-        <img src="fforhad.png" alt="Forhad Uddin Ahmed" class="profile-img"
-          onerror="this.onerror=null; this.src='headshot_photo.png';">
-        <!-- Verified Engineer Badge -->
-        <div class="profile-badge" title="Verified Engineer & Competitor">
-          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
+      <div class="hero-avatar-stage">
+        <!-- 3D Holographic Orbit Rings -->
+        <div class="orbit-ring orbit-ring-1"></div>
+        <div class="orbit-ring orbit-ring-2"></div>
+        <div class="orbit-ring orbit-ring-3"></div>
+
+        <!-- 3D Floating Micro-Badges -->
+        <div class="hero-3d-badge badge-top-right">
+          <span>⚡ Distributed</span>
+        </div>
+        <div class="hero-3d-badge badge-bottom-left">
+          <span>🏆 3x ICPC</span>
+        </div>
+        <div class="hero-3d-badge badge-top-left">
+          <span>🚀 InitZone</span>
+        </div>
+
+        <div class="profile-pic" id="heroProfilePic">
+          <img src="fforhad.png" alt="Forhad Uddin Ahmed" class="profile-img"
+            onerror="this.onerror=null; this.src='headshot_photo.png';">
+          <!-- Verified Engineer Badge -->
+          <div class="profile-badge" title="Verified Engineer & Competitor">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -2268,6 +2594,23 @@
             </svg>
             Copy Email
           </button>
+        </div>
+      </div>
+
+      <!-- Interactive 3D Holographic Distributed Core Widget -->
+      <div class="hero-3d-core-container" id="hero3dCoreContainer" title="Drag to spin 3D Core • Click to pulse">
+        <div class="hero-3d-canvas-wrap">
+          <canvas id="hero3dCanvas" class="hero-3d-canvas"></canvas>
+        </div>
+        <div class="hero-3d-hud">
+          <div class="hud-row">
+            <span><span class="hud-indicator"></span> 3D LATTICE</span>
+            <span id="hero3dNodesCount" style="color:var(--accent-cyan);">64 NODES</span>
+          </div>
+          <div class="hud-row" style="color:var(--accent-teal);">
+            <span>RAFT SYNC</span>
+            <span id="hero3dLatency">0.8ms</span>
+          </div>
         </div>
       </div>
     </header>
@@ -2962,6 +3305,7 @@
             <button class="pg-tab-btn" data-target="panel-bst">3. Binary Search Tree</button>
             <button class="pg-tab-btn" data-target="panel-subnet">4. Subnet & CIDR</button>
             <button class="pg-tab-btn" data-target="panel-sql">5. SQL & Relational Algebra</button>
+            <button class="pg-tab-btn" data-target="panel-cluster3d">⚡ 6. 3D Distributed Cluster</button>
           </div>
         </div>
 
@@ -3126,6 +3470,37 @@
               <div id="relAlgebraBox" class="rel-algebra-box">Relational Algebra: π_{ID, Name, Dept, CGPA} ( σ_{CGPA ≥ 3.8} (Students) )</div>
             </div>
             <div id="sqlResultsTableWrapper" class="sql-results-table-wrapper"></div>
+          </div>
+        </div>
+
+        <!-- PANEL 6: 3D DISTRIBUTED CLUSTER -->
+        <div class="pg-panel" id="panel-cluster3d">
+          <div class="pg-tool-header">
+            <div class="pg-tool-title-group">
+              <h3>3D Distributed Consensus & Cluster Simulator</h3>
+              <p>Interactive 3D WebGL mesh simulating leader election, Paxos/Raft heartbeats, and network partitions.</p>
+            </div>
+            <div class="pg-controls-bar">
+              <button id="clusterHeartbeatBtn" class="pg-btn pg-btn-primary">Broadcast Heartbeat</button>
+              <button id="clusterElectBtn" class="pg-btn">Elect Leader</button>
+              <button id="clusterPartitionBtn" class="pg-btn">Simulate Partition</button>
+              <button id="clusterAddNodeBtn" class="pg-btn">Add 3D Node</button>
+              <button id="clusterResetViewBtn" class="pg-btn">Reset 3D View</button>
+            </div>
+          </div>
+
+          <div class="cluster-3d-viewport" id="cluster3dViewport">
+            <canvas id="cluster3dCanvas" class="cluster-3d-canvas"></canvas>
+            <div class="cluster-3d-hint">🖱️ Drag to rotate 3D cluster • Scroll to zoom • Hover nodes</div>
+            <div id="clusterNodeTooltip" class="cluster-node-tooltip"></div>
+          </div>
+
+          <div class="pg-metrics-hud">
+            <div class="metric-pill"><span>Leader: <strong id="clusterLeaderLabel" style="color:var(--accent-cyan);">Node #1 (Primary)</strong></span></div>
+            <div class="metric-pill"><span>Term: <span id="clusterTermLabel" class="metric-val">4</span></span></div>
+            <div class="metric-pill"><span>Quorum: <span id="clusterQuorumLabel" class="metric-val">5 / 5 Active</span></span></div>
+            <div class="metric-pill"><span>Network State: <span id="clusterStateLabel" style="color:#10b981; font-weight:600;">Healthy (Consensus Synced)</span></span></div>
+            <div class="metric-pill"><span>Latency: <span id="clusterLatencyLabel" class="metric-val">1.2ms</span></span></div>
           </div>
         </div>
       </div>
@@ -3363,197 +3738,521 @@
        ========================================================================== -->
   <script>
     /* --------------------------------------------------------------------------
-       1. VIVID FULL-PAGE INTERACTIVE MOVING CANVAS (ENHANCED VISIBILITY)
+       1. THREE.JS 3D CYBERNETIC COSMOS BACKGROUND (WITH 2D FALLBACK)
        -------------------------------------------------------------------------- */
-    (function () {
+    const BgScene3D = (function () {
       const canvas = document.getElementById('bgInteractiveCanvas');
-      if (!canvas) return;
+      if (!canvas) return { init: () => {} };
 
-      const ctx = canvas.getContext('2d');
-      let width = (canvas.width = window.innerWidth);
-      let height = (canvas.height = window.innerHeight);
+      let renderer, scene, camera;
+      let particlePoints, lineMesh;
+      let floatingMeshes = [];
+      let width = window.innerWidth, height = window.innerHeight;
+      let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+      const PARTICLE_COUNT = 750;
+      let particlePositions, particleVelocities;
 
-      let mouse = {
-        x: width / 2,
-        y: height / 3,
-        targetX: width / 2,
-        targetY: height / 3,
-        isHovering: false,
-        radius: 170
-      };
+      function createParticleTexture() {
+        const pCanvas = document.createElement('canvas');
+        pCanvas.width = 32;
+        pCanvas.height = 32;
+        const pCtx = pCanvas.getContext('2d');
+        const gradient = pCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
+        gradient.addColorStop(0, 'rgba(255,255,255,1)');
+        gradient.addColorStop(0.3, 'rgba(56,189,248,0.85)');
+        gradient.addColorStop(0.7, 'rgba(129,140,248,0.3)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        pCtx.fillStyle = gradient;
+        pCtx.fillRect(0, 0, 32, 32);
+        return new THREE.CanvasTexture(pCanvas);
+      }
 
-      window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        initParticles();
-      });
-
-      window.addEventListener('mousemove', e => {
-        mouse.targetX = e.clientX;
-        mouse.targetY = e.clientY;
-        mouse.isHovering = true;
-      });
-
-      document.addEventListener('mouseleave', () => {
-        mouse.isHovering = false;
-      });
-
-      // Increased particle count for rich constellation density
-      const PARTICLE_COUNT = Math.min(85, Math.floor((width * height) / 16000));
-      let particles = [];
-
-      class Particle {
-        constructor() {
-          this.reset(true);
+      function init() {
+        if (typeof THREE === 'undefined') {
+          run2DFallback(canvas);
+          return;
         }
 
-        reset(initial = false) {
-          this.x = initial ? Math.random() * width : (Math.random() < 0.5 ? 0 : width);
-          this.y = initial ? Math.random() * height : (Math.random() < 0.5 ? 0 : height);
-          this.vx = (Math.random() - 0.5) * 0.95;
-          this.vy = (Math.random() - 0.5) * 0.95;
-          this.radius = Math.random() * 2.2 + 1.4;
-          this.baseAlpha = Math.random() * 0.45 + 0.45;
-          this.isCyan = Math.random() > 0.4;
-        }
+        try {
+          renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            alpha: true,
+            antialias: true,
+            powerPreference: 'high-performance'
+          });
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          renderer.setSize(width, height);
 
-        update() {
-          // Dynamic mouse repulsion / attraction physics
-          if (mouse.isHovering) {
-            const dx = mouse.x - this.x;
-            const dy = mouse.y - this.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < mouse.radius && dist > 0) {
-              const force = (1 - dist / mouse.radius) * 2.4;
-              this.x -= (dx / dist) * force;
-              this.y -= (dy / dist) * force;
-            }
+          scene = new THREE.Scene();
+          camera = new THREE.PerspectiveCamera(60, width / height, 1, 2500);
+          camera.position.z = 720;
+
+          // 1. 3D Particle Cloud
+          const pGeo = new THREE.BufferGeometry();
+          particlePositions = new Float32Array(PARTICLE_COUNT * 3);
+          particleVelocities = [];
+
+          for (let i = 0; i < PARTICLE_COUNT; i++) {
+            const i3 = i * 3;
+            particlePositions[i3] = (Math.random() - 0.5) * 1600;
+            particlePositions[i3 + 1] = (Math.random() - 0.5) * 1200;
+            particlePositions[i3 + 2] = (Math.random() - 0.5) * 1000;
+
+            particleVelocities.push({
+              vx: (Math.random() - 0.5) * 0.45,
+              vy: (Math.random() - 0.5) * 0.45,
+              vz: (Math.random() - 0.5) * 0.3
+            });
           }
+          pGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
 
-          this.x += this.vx;
-          this.y += this.vy;
+          const pMat = new THREE.PointsMaterial({
+            size: 8,
+            map: createParticleTexture(),
+            transparent: true,
+            opacity: 0.8,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending
+          });
+          particlePoints = new THREE.Points(pGeo, pMat);
+          scene.add(particlePoints);
 
-          if (this.x < 0 || this.x > width) this.vx *= -1;
-          if (this.y < 0 || this.y > height) this.vy *= -1;
-        }
+          // 2. Dynamic 3D Interconnect Lines
+          const maxLines = 450;
+          const lineGeo = new THREE.BufferGeometry();
+          const linePositions = new Float32Array(maxLines * 6);
+          lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+          const lineMat = new THREE.LineBasicMaterial({
+            color: 0x818cf8,
+            transparent: true,
+            opacity: 0.22,
+            blending: THREE.AdditiveBlending
+          });
+          lineMesh = new THREE.LineSegments(lineGeo, lineMat);
+          scene.add(lineMesh);
 
-        draw() {
+          // 3. Floating 3D Wireframe Polyhedra
           const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          
-          if (isDark) {
-            ctx.fillStyle = this.isCyan
-              ? `rgba(56, 189, 248, ${this.baseAlpha})`
-              : `rgba(167, 139, 250, ${this.baseAlpha})`;
-            ctx.shadowBlur = 6;
-            ctx.shadowColor = this.isCyan ? 'rgba(56, 189, 248, 0.7)' : 'rgba(167, 139, 250, 0.7)';
-          } else {
-            ctx.fillStyle = this.isCyan
-              ? `rgba(2, 132, 199, ${this.baseAlpha * 0.85})`
-              : `rgba(124, 58, 237, ${this.baseAlpha * 0.85})`;
-            ctx.shadowBlur = 3;
-            ctx.shadowColor = 'rgba(2, 132, 199, 0.4)';
-          }
-          ctx.fill();
-          ctx.shadowBlur = 0; // reset
+          const polyColor = isDark ? 0x38bdf8 : 0x2563eb;
+
+          const polyConfigs = [
+            { geo: new THREE.IcosahedronGeometry(75, 1), x: -420, y: 220, z: -250, rx: 0.003, ry: 0.005 },
+            { geo: new THREE.OctahedronGeometry(55, 0), x: 420, y: -180, z: -300, rx: -0.004, ry: 0.003 },
+            { geo: new THREE.TorusKnotGeometry(48, 12, 80, 16), x: 380, y: 260, z: -350, rx: 0.005, ry: 0.004 },
+            { geo: new THREE.DodecahedronGeometry(60, 0), x: -380, y: -240, z: -200, rx: 0.003, ry: -0.004 }
+          ];
+
+          polyConfigs.forEach(cfg => {
+            const mat = new THREE.MeshBasicMaterial({
+              color: polyColor,
+              wireframe: true,
+              transparent: true,
+              opacity: isDark ? 0.22 : 0.12
+            });
+            const mesh = new THREE.Mesh(cfg.geo, mat);
+            mesh.position.set(cfg.x, cfg.y, cfg.z);
+            mesh.userData = { rx: cfg.rx, ry: cfg.ry, baseY: cfg.y, floatSeed: Math.random() * Math.PI * 2 };
+            scene.add(mesh);
+            floatingMeshes.push(mesh);
+          });
+
+          // Listeners
+          window.addEventListener('resize', onResize, { passive: true });
+          window.addEventListener('mousemove', onMouseMove, { passive: true });
+          window.addEventListener('scroll', onScroll, { passive: true });
+          window.addEventListener('themechange', onThemeChange);
+
+          animate();
+        } catch (e) {
+          console.warn('Three.js background initialization fallback:', e);
+          run2DFallback(canvas);
         }
       }
 
-      function initParticles() {
-        particles = [];
+      function onResize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        if (!renderer || !camera) return;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      }
+
+      function onMouseMove(e) {
+        mouse.targetX = (e.clientX - width / 2) * 0.45;
+        mouse.targetY = (e.clientY - height / 2) * 0.45;
+      }
+
+      function onScroll() {
+        if (!camera) return;
+        const scrollFactor = window.scrollY * 0.25;
+        camera.position.z = 720 + Math.min(scrollFactor, 400);
+      }
+
+      function onThemeChange(e) {
+        const theme = e.detail?.theme || document.documentElement.getAttribute('data-theme') || 'dark';
+        const isDark = theme === 'dark';
+        if (particlePoints) {
+          particlePoints.material.opacity = isDark ? 0.8 : 0.4;
+          particlePoints.material.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
+        }
+        if (lineMesh) {
+          lineMesh.material.color.setHex(isDark ? 0x818cf8 : 0x4f46e5);
+          lineMesh.material.opacity = isDark ? 0.22 : 0.12;
+        }
+        floatingMeshes.forEach(mesh => {
+          mesh.material.color.setHex(isDark ? 0x38bdf8 : 0x2563eb);
+          mesh.material.opacity = isDark ? 0.22 : 0.12;
+        });
+      }
+
+      let time = 0;
+      function animate() {
+        requestAnimationFrame(animate);
+        time += 0.012;
+
+        // Smooth camera lerp
+        mouse.x += (mouse.targetX - mouse.x) * 0.05;
+        mouse.y += (mouse.targetY - mouse.y) * 0.05;
+        camera.position.x = mouse.x;
+        camera.position.y = -mouse.y;
+        camera.lookAt(scene.position);
+
+        // Update particles
+        const pos = particlePoints.geometry.attributes.position.array;
         for (let i = 0; i < PARTICLE_COUNT; i++) {
-          particles.push(new Particle());
+          const i3 = i * 3;
+          pos[i3] += particleVelocities[i].vx;
+          pos[i3 + 1] += particleVelocities[i].vy;
+          pos[i3 + 2] += particleVelocities[i].vz;
+
+          if (pos[i3] > 800 || pos[i3] < -800) particleVelocities[i].vx *= -1;
+          if (pos[i3 + 1] > 600 || pos[i3 + 1] < -600) particleVelocities[i].vy *= -1;
+          if (pos[i3 + 2] > 500 || pos[i3 + 2] < -500) particleVelocities[i].vz *= -1;
         }
-      }
-      initParticles();
+        particlePoints.geometry.attributes.position.needsUpdate = true;
 
-      // Smooth Animation Loop
-      function render() {
-        // Smooth lerp mouse coordinates
-        mouse.x += (mouse.targetX - mouse.x) * 0.15;
-        mouse.y += (mouse.targetY - mouse.y) * 0.15;
+        // Update interconnecting lines
+        const linePos = lineMesh.geometry.attributes.position.array;
+        let lineIdx = 0;
+        const maxLines = 450;
+        const lineDistSq = 115 * 115;
 
-        ctx.clearRect(0, 0, width, height);
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        for (let i = 0; i < 90 && lineIdx < maxLines * 6; i++) {
+          const i3 = i * 3;
+          for (let j = i + 1; j < 90 && lineIdx < maxLines * 6; j++) {
+            const j3 = j * 3;
+            const dx = pos[i3] - pos[j3];
+            const dy = pos[i3 + 1] - pos[j3 + 1];
+            const dz = pos[i3 + 2] - pos[j3 + 2];
+            const distSq = dx * dx + dy * dy + dz * dz;
 
-        // Connect nearby particles with crisp glowing lines
-        for (let i = 0; i < particles.length; i++) {
-          particles[i].update();
-          particles[i].draw();
-
-          for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 135) {
-              const alpha = (1 - dist / 135) * 0.48;
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = isDark
-                ? `rgba(129, 140, 248, ${alpha})`
-                : `rgba(79, 70, 229, ${alpha * 0.8})`;
-              ctx.lineWidth = 1.1;
-              ctx.stroke();
-            }
-          }
-
-          // Dynamic vibrant lines connecting to the active cursor
-          if (mouse.isHovering) {
-            const mdx = mouse.x - particles[i].x;
-            const mdy = mouse.y - particles[i].y;
-            const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-            if (mdist < 170) {
-              const mAlpha = (1 - mdist / 170) * 0.75;
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(mouse.x, mouse.y);
-              ctx.strokeStyle = isDark
-                ? `rgba(56, 189, 248, ${mAlpha})`
-                : `rgba(2, 132, 199, ${mAlpha})`;
-              ctx.lineWidth = 1.4;
-              ctx.shadowBlur = 8;
-              ctx.shadowColor = 'rgba(56, 189, 248, 0.8)';
-              ctx.stroke();
-              ctx.shadowBlur = 0;
+            if (distSq < lineDistSq) {
+              linePos[lineIdx++] = pos[i3];
+              linePos[lineIdx++] = pos[i3 + 1];
+              linePos[lineIdx++] = pos[i3 + 2];
+              linePos[lineIdx++] = pos[j3];
+              linePos[lineIdx++] = pos[j3 + 1];
+              linePos[lineIdx++] = pos[j3 + 2];
             }
           }
         }
+        while (lineIdx < maxLines * 6) {
+          linePos[lineIdx++] = 0;
+        }
+        lineMesh.geometry.attributes.position.needsUpdate = true;
 
-        // Draw subtle glowing cursor focal hub
-        if (mouse.isHovering) {
-          ctx.beginPath();
-          ctx.arc(mouse.x, mouse.y, 4, 0, Math.PI * 2);
-          ctx.fillStyle = isDark ? '#38bdf8' : '#0284c7';
-          ctx.shadowBlur = 12;
-          ctx.shadowColor = isDark ? '#38bdf8' : '#0284c7';
-          ctx.fill();
-          ctx.shadowBlur = 0;
+        // Animate floating wireframe polyhedra
+        floatingMeshes.forEach(mesh => {
+          mesh.rotation.x += mesh.userData.rx;
+          mesh.rotation.y += mesh.userData.ry;
+          mesh.position.y = mesh.userData.baseY + Math.sin(time + mesh.userData.floatSeed) * 18;
+        });
+
+        renderer.render(scene, camera);
+      }
+
+      function run2DFallback(canvas) {
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        let w = (canvas.width = window.innerWidth);
+        let h = (canvas.height = window.innerHeight);
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; });
+        let dots = Array.from({ length: 65 }, () => ({
+          x: Math.random() * w, y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.8, vy: (Math.random() - 0.5) * 0.8
+        }));
+        function step() {
+          ctx.clearRect(0, 0, w, h);
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.6)';
+          dots.forEach(d => {
+            d.x = (d.x + d.vx + w) % w;
+            d.y = (d.y + d.vy + h) % h;
+            ctx.beginPath();
+            ctx.arc(d.x, d.y, 2, 0, Math.PI * 2);
+            ctx.fill();
+          });
+          requestAnimationFrame(step);
+        }
+        step();
+      }
+
+      return { init };
+    })();
+
+    /* --------------------------------------------------------------------------
+       2. INTERACTIVE 3D HERO DISTRIBUTED CORE (DRAG TO ROTATE & PULSE)
+       -------------------------------------------------------------------------- */
+    const HeroCore3D = (function () {
+      const canvas = document.getElementById('hero3dCanvas');
+      if (!canvas) return { init: () => {} };
+
+      let renderer, scene, camera, coreGroup;
+      let innerSphere, outerCage, ring1, ring2;
+      let isDragging = false;
+      let prevMouse = { x: 0, y: 0 };
+      let rotationVelocity = { x: 0.003, y: 0.006 };
+      let packets = [];
+
+      function init() {
+        if (typeof THREE === 'undefined') return;
+        const wrap = canvas.parentElement;
+        const width = wrap.clientWidth || 220;
+        const height = wrap.clientHeight || 180;
+
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(width, height);
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+        camera.position.z = 115;
+
+        coreGroup = new THREE.Group();
+        scene.add(coreGroup);
+
+        // 1. Central Core Sphere (Pulsing glowing nucleus)
+        const innerGeo = new THREE.SphereGeometry(14, 20, 20);
+        const innerMat = new THREE.MeshBasicMaterial({
+          color: 0x38bdf8,
+          wireframe: false
+        });
+        innerSphere = new THREE.Mesh(innerGeo, innerMat);
+        coreGroup.add(innerSphere);
+
+        // 2. Wireframe Icosahedron Cage
+        const cageGeo = new THREE.IcosahedronGeometry(28, 1);
+        const cageMat = new THREE.MeshBasicMaterial({
+          color: 0x818cf8,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.75
+        });
+        outerCage = new THREE.Mesh(cageGeo, cageMat);
+        coreGroup.add(outerCage);
+
+        // 3. Glowing Node Vertices on the Cage
+        const nodeGeo = new THREE.SphereGeometry(1.8, 8, 8);
+        const nodeMat = new THREE.MeshBasicMaterial({ color: 0x2dd4bf });
+        const posAttr = cageGeo.attributes.position;
+        for (let i = 0; i < posAttr.count; i += 3) {
+          const nodeMesh = new THREE.Mesh(nodeGeo, nodeMat);
+          nodeMesh.position.set(posAttr.getX(i), posAttr.getY(i), posAttr.getZ(i));
+          coreGroup.add(nodeMesh);
         }
 
-        requestAnimationFrame(render);
-      }
-      render();
+        // 4. Concentric 3D Orbital Rings
+        const ring1Geo = new THREE.TorusGeometry(38, 0.75, 12, 48);
+        const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.5 });
+        ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
+        ring1.rotation.x = Math.PI / 3;
+        coreGroup.add(ring1);
 
-      // 3D Avatar Tilt Effect
-      const heroIntro = document.getElementById('hero');
-      const profilePic = document.getElementById('heroProfilePic');
-      if (heroIntro && profilePic) {
-        heroIntro.addEventListener('mousemove', e => {
-          const rect = profilePic.getBoundingClientRect();
-          const cardX = rect.left + rect.width / 2;
-          const cardY = rect.top + rect.height / 2;
-          const deltaX = (e.clientX - cardX) / 15;
-          const deltaY = (e.clientY - cardY) / 15;
-          profilePic.style.transform = `perspective(1000px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg) translateY(-6px) scale(1.04)`;
+        const ring2Geo = new THREE.TorusGeometry(44, 0.75, 12, 48);
+        const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.45 });
+        ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+        ring2.rotation.y = Math.PI / 4;
+        coreGroup.add(ring2);
+
+        // 5. Data Packet Beads Orbiting in 3D
+        for (let i = 0; i < 4; i++) {
+          const pMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(2.2, 8, 8),
+            new THREE.MeshBasicMaterial({ color: 0xf8fafc })
+          );
+          pMesh.userData = { angle: (i / 4) * Math.PI * 2, radius: 38, speed: 0.035 + i * 0.01 };
+          coreGroup.add(pMesh);
+          packets.push(pMesh);
+        }
+
+        // Mouse Drag Interaction on 3D Core
+        canvas.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          prevMouse = { x: e.clientX, y: e.clientY };
         });
 
-        heroIntro.addEventListener('mouseleave', () => {
-          profilePic.style.transform = '';
+        window.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const deltaX = e.clientX - prevMouse.x;
+          const deltaY = e.clientY - prevMouse.y;
+          rotationVelocity.y = deltaX * 0.008;
+          rotationVelocity.x = deltaY * 0.008;
+          prevMouse = { x: e.clientX, y: e.clientY };
         });
+
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        // Touch Support
+        canvas.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 1) {
+            isDragging = true;
+            prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+          if (!isDragging || e.touches.length !== 1) return;
+          const deltaX = e.touches[0].clientX - prevMouse.x;
+          const deltaY = e.touches[0].clientY - prevMouse.y;
+          rotationVelocity.y = deltaX * 0.008;
+          rotationVelocity.x = deltaY * 0.008;
+          prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => { isDragging = false; });
+
+        // Click to Pulse
+        canvas.addEventListener('click', () => {
+          pulseCore();
+        });
+
+        // Hover spin boost
+        canvas.addEventListener('mouseenter', () => {
+          rotationVelocity.y = 0.02;
+        });
+
+        animate();
       }
+
+      function pulseCore() {
+        if (!innerSphere || !outerCage) return;
+        let scale = 1.35;
+        innerSphere.scale.set(scale, scale, scale);
+        outerCage.scale.set(scale, scale, scale);
+        const latencyEl = document.getElementById('hero3dLatency');
+        if (latencyEl) latencyEl.textContent = '0.3ms (SYNC)';
+
+        setTimeout(() => {
+          innerSphere.scale.set(1, 1, 1);
+          outerCage.scale.set(1, 1, 1);
+          if (latencyEl) latencyEl.textContent = '0.8ms';
+        }, 320);
+      }
+
+      let time = 0;
+      function animate() {
+        requestAnimationFrame(animate);
+        time += 0.02;
+
+        if (coreGroup) {
+          coreGroup.rotation.y += rotationVelocity.y;
+          coreGroup.rotation.x += rotationVelocity.x;
+
+          if (!isDragging) {
+            rotationVelocity.y += (0.005 - rotationVelocity.y) * 0.05;
+            rotationVelocity.x += (0.002 - rotationVelocity.x) * 0.05;
+          }
+
+          const pulse = 1 + Math.sin(time * 2.5) * 0.08;
+          innerSphere.scale.set(pulse, pulse, pulse);
+
+          packets.forEach(p => {
+            p.userData.angle += p.userData.speed;
+            p.position.x = Math.cos(p.userData.angle) * p.userData.radius;
+            p.position.z = Math.sin(p.userData.angle) * p.userData.radius;
+            p.position.y = Math.sin(p.userData.angle * 2) * 8;
+          });
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      return { init, pulseCore };
+    })();
+
+    /* --------------------------------------------------------------------------
+       3. UNIVERSAL MULTI-LAYER 3D TILT ENGINE (WITH SPECULAR GLARE & PARALLAX)
+       -------------------------------------------------------------------------- */
+    const Tilt3DEngine = (function () {
+      function init() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if ('ontouchstart' in window && window.innerWidth < 768) return;
+
+        const cards = document.querySelectorAll(
+          '.bento-card, .project-card, .card, .cs-playground-card, #hero'
+        );
+
+        cards.forEach(card => {
+          let glare = card.querySelector('.card-3d-glare');
+          if (!glare) {
+            glare = document.createElement('div');
+            glare.className = 'card-3d-glare';
+            card.appendChild(glare);
+          }
+
+          let isHovered = false;
+
+          card.addEventListener('pointerenter', () => {
+            isHovered = true;
+          });
+
+          card.addEventListener('pointermove', (e) => {
+            if (!isHovered) return;
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const xPct = (x / rect.width) - 0.5;
+            const yPct = (y / rect.height) - 0.5;
+
+            const maxTilt = card.id === 'hero' ? 5 : 9;
+            const rotX = -yPct * maxTilt;
+            const rotY = xPct * maxTilt;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.012, 1.012, 1.012) translateZ(8px)`;
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const glareAlpha = isDark ? 0.16 : 0.08;
+            glare.style.opacity = '1';
+            glare.style.background = `radial-gradient(circle 380px at ${x}px ${y}px, rgba(255, 255, 255, ${glareAlpha}), transparent 70%)`;
+          });
+
+          card.addEventListener('pointerleave', () => {
+            isHovered = false;
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1) translateZ(0px)';
+            glare.style.opacity = '0';
+          });
+        });
+
+        // 3D Avatar Tilt
+        const heroIntro = document.getElementById('hero');
+        const profilePic = document.getElementById('heroProfilePic');
+        if (heroIntro && profilePic) {
+          heroIntro.addEventListener('mousemove', e => {
+            const rect = profilePic.getBoundingClientRect();
+            const cardX = rect.left + rect.width / 2;
+            const cardY = rect.top + rect.height / 2;
+            const deltaX = (e.clientX - cardX) / 14;
+            const deltaY = (e.clientY - cardY) / 14;
+            profilePic.style.transform = `perspective(1000px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg) translateY(-6px) translateZ(32px) scale(1.04)`;
+          });
+
+          heroIntro.addEventListener('mouseleave', () => {
+            profilePic.style.transform = '';
+          });
+        }
+      }
+
+      return { init };
     })();
 
     /* --------------------------------------------------------------------------
@@ -4268,6 +4967,424 @@
     })();
 
     /* --------------------------------------------------------------------------
+       6. 3D DISTRIBUTED CLUSTER SIMULATOR (THREE.JS WEBGL ENGINE)
+       -------------------------------------------------------------------------- */
+    const Cluster3DApp = (function () {
+      let isInitialized = false;
+      let renderer, scene, camera;
+      let clusterGroup, nodes = [], links = [], packets = [];
+      let partitionPlane = null;
+      let isPartitioned = false;
+      let leaderIndex = 0;
+      let term = 4;
+      let isOrbiting = false;
+      let mouseStart = { x: 0, y: 0 };
+      let orbitAngle = { theta: 0.8, phi: 0.6, radius: 240 };
+      let raycaster, mouseNorm;
+      let tooltip, canvas, viewport;
+
+      function init() {
+        if (isInitialized) return;
+        canvas = document.getElementById('cluster3dCanvas');
+        viewport = document.getElementById('cluster3dViewport');
+        tooltip = document.getElementById('clusterNodeTooltip');
+        if (!canvas || !viewport || typeof THREE === 'undefined') return;
+
+        const width = viewport.clientWidth || 800;
+        const height = viewport.clientHeight || 420;
+
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(width, height);
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000);
+        updateCameraPosition();
+
+        clusterGroup = new THREE.Group();
+        scene.add(clusterGroup);
+
+        raycaster = new THREE.Raycaster();
+        mouseNorm = new THREE.Vector2(-999, -999);
+
+        buildCluster();
+
+        // Viewport Interaction (Orbit & Zoom)
+        viewport.addEventListener('mousedown', (e) => {
+          isOrbiting = true;
+          mouseStart = { x: e.clientX, y: e.clientY };
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (isOrbiting) {
+            const dx = e.clientX - mouseStart.x;
+            const dy = e.clientY - mouseStart.y;
+            orbitAngle.theta -= dx * 0.008;
+            orbitAngle.phi = Math.max(0.1, Math.min(Math.PI / 2 - 0.05, orbitAngle.phi - dy * 0.008));
+            updateCameraPosition();
+            mouseStart = { x: e.clientX, y: e.clientY };
+          }
+
+          // Raycasting on hover
+          const rect = viewport.getBoundingClientRect();
+          if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+            mouseNorm.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouseNorm.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+          } else {
+            mouseNorm.x = -999;
+            mouseNorm.y = -999;
+          }
+        });
+
+        window.addEventListener('mouseup', () => { isOrbiting = false; });
+
+        viewport.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          orbitAngle.radius = Math.max(140, Math.min(420, orbitAngle.radius + e.deltaY * 0.25));
+          updateCameraPosition();
+        }, { passive: false });
+
+        window.addEventListener('resize', onResize, { passive: true });
+
+        isInitialized = true;
+        animate();
+      }
+
+      function onResize() {
+        if (!viewport || !camera || !renderer) return;
+        const width = viewport.clientWidth;
+        const height = viewport.clientHeight;
+        if (width === 0 || height === 0) return;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      }
+
+      function onShow() {
+        if (!isInitialized) init();
+        else onResize();
+      }
+
+      function updateCameraPosition() {
+        camera.position.x = orbitAngle.radius * Math.sin(orbitAngle.phi) * Math.sin(orbitAngle.theta);
+        camera.position.y = orbitAngle.radius * Math.cos(orbitAngle.phi);
+        camera.position.z = orbitAngle.radius * Math.sin(orbitAngle.phi) * Math.cos(orbitAngle.theta);
+        camera.lookAt(0, 0, 0);
+      }
+
+      function buildCluster() {
+        while (clusterGroup.children.length > 0) {
+          clusterGroup.remove(clusterGroup.children[0]);
+        }
+        nodes = [];
+        links = [];
+        packets = [];
+
+        const nodeCount = 5;
+        const radius = 95;
+
+        for (let i = 0; i < nodeCount; i++) {
+          const isLeader = i === leaderIndex;
+          const angle = (i / nodeCount) * Math.PI * 2;
+          const x = isLeader ? 0 : Math.cos(angle) * radius;
+          const z = isLeader ? 0 : Math.sin(angle) * radius;
+          const y = isLeader ? 22 : Math.sin(angle * 3) * 16;
+
+          const nGeo = new THREE.SphereGeometry(isLeader ? 14 : 10, 24, 24);
+          const nMat = new THREE.MeshBasicMaterial({
+            color: isLeader ? 0x10b981 : 0x38bdf8
+          });
+          const mesh = new THREE.Mesh(nGeo, nMat);
+          mesh.position.set(x, y, z);
+          mesh.userData = { id: i + 1, isLeader, isPartitioned: false, baseColor: isLeader ? 0x10b981 : 0x38bdf8 };
+
+          if (isLeader) {
+            const haloGeo = new THREE.TorusGeometry(19, 0.75, 12, 36);
+            const haloMat = new THREE.MeshBasicMaterial({ color: 0x34d399, transparent: true, opacity: 0.85 });
+            const halo = new THREE.Mesh(haloGeo, haloMat);
+            halo.rotation.x = Math.PI / 2;
+            mesh.add(halo);
+            mesh.userData.halo = halo;
+          }
+
+          clusterGroup.add(mesh);
+          nodes.push(mesh);
+        }
+
+        buildLinks();
+        updateHUD();
+      }
+
+      function buildLinks() {
+        links.forEach(l => clusterGroup.remove(l.mesh));
+        links = [];
+
+        const leader = nodes[leaderIndex];
+        nodes.forEach((node, i) => {
+          if (i === leaderIndex) return;
+          const link = createLink(leader, node);
+          links.push(link);
+        });
+
+        for (let i = 0; i < nodes.length; i++) {
+          const next = (i + 1) % nodes.length;
+          if (i !== leaderIndex && next !== leaderIndex) {
+            const peerLink = createLink(nodes[i], nodes[next], true);
+            links.push(peerLink);
+          }
+        }
+      }
+
+      function createLink(nodeA, nodeB, isPeer = false) {
+        const points = [nodeA.position, nodeB.position];
+        const geo = new THREE.BufferGeometry().setFromPoints(points);
+        const mat = new THREE.LineBasicMaterial({
+          color: isPeer ? 0x818cf8 : 0x38bdf8,
+          transparent: true,
+          opacity: isPeer ? 0.35 : 0.65
+        });
+        const line = new THREE.Line(geo, mat);
+        clusterGroup.add(line);
+        return { mesh: line, nodeA, nodeB, isPeer };
+      }
+
+      function broadcastHeartbeat() {
+        const leader = nodes[leaderIndex];
+        if (!leader) return;
+
+        leader.scale.set(1.3, 1.3, 1.3);
+        setTimeout(() => leader.scale.set(1, 1, 1), 200);
+
+        links.forEach(l => {
+          if (l.nodeA === leader || l.nodeB === leader) {
+            const target = l.nodeA === leader ? l.nodeB : l.nodeA;
+            if (isPartitioned && target.userData.isPartitioned) return;
+
+            spawnPacket(leader.position, target.position, target);
+          }
+        });
+
+        const lat = (1.0 + Math.random() * 0.7).toFixed(1);
+        const latLabel = document.getElementById('clusterLatencyLabel');
+        if (latLabel) latLabel.textContent = `${lat}ms`;
+      }
+
+      function spawnPacket(startPos, endPos, targetNode) {
+        const pGeo = new THREE.SphereGeometry(3, 10, 10);
+        const pMat = new THREE.MeshBasicMaterial({ color: 0x34d399 });
+        const pMesh = new THREE.Mesh(pGeo, pMat);
+        pMesh.position.copy(startPos);
+        clusterGroup.add(pMesh);
+
+        packets.push({
+          mesh: pMesh,
+          start: startPos.clone(),
+          end: endPos.clone(),
+          progress: 0,
+          targetNode
+        });
+      }
+
+      function electLeader() {
+        term++;
+        const prevLeader = nodes[leaderIndex];
+        if (prevLeader) {
+          prevLeader.material.color.setHex(0x38bdf8);
+          prevLeader.scale.set(1, 1, 1);
+          if (prevLeader.userData.halo) prevLeader.remove(prevLeader.userData.halo);
+          prevLeader.userData.isLeader = false;
+        }
+
+        let candidates = nodes.map((_, i) => i).filter(i => i !== leaderIndex && (!isPartitioned || !nodes[i].userData.isPartitioned));
+        if (candidates.length === 0) candidates = [0];
+        leaderIndex = candidates[Math.floor(Math.random() * candidates.length)];
+
+        const newLeader = nodes[leaderIndex];
+        newLeader.userData.isLeader = true;
+        newLeader.material.color.setHex(0x10b981);
+        newLeader.scale.set(1.4, 1.4, 1.4);
+
+        const haloGeo = new THREE.TorusGeometry(19, 0.75, 12, 36);
+        const haloMat = new THREE.MeshBasicMaterial({ color: 0x34d399, transparent: true, opacity: 0.85 });
+        const halo = new THREE.Mesh(haloGeo, haloMat);
+        halo.rotation.x = Math.PI / 2;
+        newLeader.add(halo);
+        newLeader.userData.halo = halo;
+
+        setTimeout(() => newLeader.scale.set(1, 1, 1), 300);
+
+        buildLinks();
+        broadcastHeartbeat();
+        updateHUD();
+      }
+
+      function simulatePartition() {
+        isPartitioned = !isPartitioned;
+        const btn = document.getElementById('clusterPartitionBtn');
+        const stateLabel = document.getElementById('clusterStateLabel');
+
+        if (isPartitioned) {
+          if (btn) btn.textContent = 'Heal Partition';
+          if (stateLabel) {
+            stateLabel.textContent = 'Partition Active (Split-Brain Guard)';
+            stateLabel.style.color = '#ef4444';
+          }
+
+          if (!partitionPlane) {
+            const pGeo = new THREE.PlaneGeometry(240, 180);
+            const pMat = new THREE.MeshBasicMaterial({
+              color: 0xef4444,
+              transparent: true,
+              opacity: 0.18,
+              side: THREE.DoubleSide
+            });
+            partitionPlane = new THREE.Mesh(pGeo, pMat);
+            partitionPlane.rotation.y = Math.PI / 3;
+            clusterGroup.add(partitionPlane);
+          }
+          partitionPlane.visible = true;
+
+          nodes.forEach(node => {
+            if (node.position.x < 0) {
+              node.userData.isPartitioned = true;
+              node.material.color.setHex(0xef4444);
+            }
+          });
+
+          links.forEach(l => {
+            if (l.nodeA.userData.isPartitioned !== l.nodeB.userData.isPartitioned) {
+              l.mesh.material.color.setHex(0xef4444);
+              l.mesh.material.opacity = 0.2;
+            }
+          });
+        } else {
+          if (btn) btn.textContent = 'Simulate Partition';
+          if (stateLabel) {
+            stateLabel.textContent = 'Healthy (Consensus Synced)';
+            stateLabel.style.color = '#10b981';
+          }
+          if (partitionPlane) partitionPlane.visible = false;
+
+          nodes.forEach(node => {
+            node.userData.isPartitioned = false;
+            node.material.color.setHex(node.userData.isLeader ? 0x10b981 : 0x38bdf8);
+          });
+
+          buildLinks();
+          broadcastHeartbeat();
+        }
+
+        updateHUD();
+      }
+
+      function addNode() {
+        if (nodes.length >= 9) {
+          showToast('Cluster node limit reached (max 9 nodes).');
+          return;
+        }
+        const id = nodes.length + 1;
+        const angle = (nodes.length / 8) * Math.PI * 2;
+        const radius = 105;
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius;
+        const y = Math.cos(angle * 2) * 18;
+
+        const nGeo = new THREE.SphereGeometry(10, 24, 24);
+        const nMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+        const mesh = new THREE.Mesh(nGeo, nMat);
+        mesh.position.set(x, y, z);
+        mesh.userData = { id, isLeader: false, isPartitioned: false, baseColor: 0x38bdf8 };
+        mesh.scale.set(0.01, 0.01, 0.01);
+        clusterGroup.add(mesh);
+        nodes.push(mesh);
+
+        let s = 0.01;
+        const popTimer = setInterval(() => {
+          s += 0.15;
+          if (s >= 1.0) {
+            mesh.scale.set(1, 1, 1);
+            clearInterval(popTimer);
+          } else {
+            mesh.scale.set(s, s, s);
+          }
+        }, 20);
+
+        buildLinks();
+        broadcastHeartbeat();
+        updateHUD();
+      }
+
+      function resetView() {
+        orbitAngle = { theta: 0.8, phi: 0.6, radius: 240 };
+        updateCameraPosition();
+      }
+
+      function updateHUD() {
+        const leaderEl = document.getElementById('clusterLeaderLabel');
+        const termEl = document.getElementById('clusterTermLabel');
+        const quorumEl = document.getElementById('clusterQuorumLabel');
+
+        if (leaderEl) leaderEl.textContent = `Node #${nodes[leaderIndex]?.userData.id || 1} (Primary)`;
+        if (termEl) termEl.textContent = `${term}`;
+        const activeCount = isPartitioned ? nodes.filter(n => !n.userData.isPartitioned).length : nodes.length;
+        if (quorumEl) quorumEl.textContent = `${activeCount} / ${nodes.length} Active`;
+      }
+
+      let time = 0;
+      function animate() {
+        requestAnimationFrame(animate);
+        time += 0.015;
+
+        if (!isOrbiting) {
+          clusterGroup.rotation.y += 0.002;
+        }
+
+        const leader = nodes[leaderIndex];
+        if (leader && leader.userData.halo) {
+          leader.userData.halo.rotation.z += 0.03;
+        }
+
+        for (let i = packets.length - 1; i >= 0; i--) {
+          const p = packets[i];
+          p.progress += 0.045;
+          if (p.progress >= 1.0) {
+            p.targetNode.scale.set(1.25, 1.25, 1.25);
+            setTimeout(() => p.targetNode.scale.set(1, 1, 1), 140);
+            clusterGroup.remove(p.mesh);
+            packets.splice(i, 1);
+          } else {
+            p.mesh.position.lerpVectors(p.start, p.end, p.progress);
+            p.mesh.position.y += Math.sin(p.progress * Math.PI) * 12;
+          }
+        }
+
+        if (mouseNorm.x !== -999 && tooltip) {
+          raycaster.setFromCamera(mouseNorm, camera);
+          const intersects = raycaster.intersectObjects(nodes);
+          if (intersects.length > 0) {
+            const hit = intersects[0].object;
+            tooltip.innerHTML = `<strong>Node #${hit.userData.id}</strong><br>Role: ${hit.userData.isLeader ? 'LEADER (Raft)' : 'FOLLOWER'}<br>Status: ${hit.userData.isPartitioned ? 'ISOLATED' : 'ONLINE'}<br>Port: 800${hit.userData.id}`;
+            tooltip.classList.add('visible');
+          } else {
+            tooltip.classList.remove('visible');
+          }
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      return {
+        init,
+        onShow,
+        broadcastHeartbeat,
+        electLeader,
+        simulatePartition,
+        addNode,
+        resetView
+      };
+    })();
+
+    /* --------------------------------------------------------------------------
        7. MAIN UI CONTROLLER & MODALS
        -------------------------------------------------------------------------- */
     document.addEventListener('DOMContentLoaded', () => {
@@ -4278,10 +5395,13 @@
 
       if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
+          themeToggleBtn.classList.add('flipping');
+          setTimeout(() => themeToggleBtn.classList.remove('flipping'), 600);
           const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
           const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
           document.documentElement.setAttribute('data-theme', newTheme);
           localStorage.setItem('theme', newTheme);
+          window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: newTheme } }));
           showToast(`Switched to ${newTheme.toUpperCase()} mode`);
         });
       }
@@ -4462,10 +5582,15 @@
           btn.classList.add('active');
           const targetPanel = document.getElementById(targetId);
           if (targetPanel) targetPanel.classList.add('active');
+          if (targetId === 'panel-cluster3d') Cluster3DApp.onShow();
         });
       });
 
-      // Initialize all Playground Visualizers
+      // Initialize 3D Engines & Playground Visualizers
+      BgScene3D.init();
+      HeroCore3D.init();
+      Tilt3DEngine.init();
+      Cluster3DApp.init();
       PathfindingApp.init();
       SortingApp.init();
       BSTApp.init();
@@ -4489,6 +5614,13 @@
       document.getElementById('bstPreorderBtn')?.addEventListener('click', () => BSTApp.traverse('preorder'));
       document.getElementById('bstPostorderBtn')?.addEventListener('click', () => BSTApp.traverse('postorder'));
       document.getElementById('bstBfsBtn')?.addEventListener('click', () => BSTApp.traverse('bfs'));
+
+      // 3D Cluster Event Listeners
+      document.getElementById('clusterHeartbeatBtn')?.addEventListener('click', Cluster3DApp.broadcastHeartbeat);
+      document.getElementById('clusterElectBtn')?.addEventListener('click', Cluster3DApp.electLeader);
+      document.getElementById('clusterPartitionBtn')?.addEventListener('click', Cluster3DApp.simulatePartition);
+      document.getElementById('clusterAddNodeBtn')?.addEventListener('click', Cluster3DApp.addNode);
+      document.getElementById('clusterResetViewBtn')?.addEventListener('click', Cluster3DApp.resetView);
     });
 
     function showToast(msg) {
