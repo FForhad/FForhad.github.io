@@ -449,139 +449,16 @@
       100% { transform: scale(1.3) translate(30px, -25px); opacity: 0.4; }
     }
 
-    /* 3D AVATAR STAGE & HOLOGRAPHIC ORBITAL RINGS */
-    .hero-avatar-stage {
-      position: relative;
-      width: 260px;
-      height: 280px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1200px;
-      transform-style: preserve-3d;
-      flex-shrink: 0;
-      z-index: 2;
-    }
-
-    .orbit-ring {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      transform-style: preserve-3d;
-    }
-
-    .orbit-ring-1 {
-      width: 280px;
-      height: 280px;
-      border: 1.5px solid rgba(56, 189, 248, 0.35);
-      border-top-color: var(--accent-cyan);
-      border-right-color: transparent;
-      animation: orbitSpin1 14s linear infinite;
-      transform: rotateX(65deg) rotateY(15deg);
-    }
-
-    .orbit-ring-2 {
-      width: 300px;
-      height: 300px;
-      border: 1.5px solid rgba(129, 140, 248, 0.3);
-      border-bottom-color: var(--accent-purple);
-      border-left-color: transparent;
-      animation: orbitSpin2 18s linear infinite reverse;
-      transform: rotateX(72deg) rotateY(-25deg);
-    }
-
-    .orbit-ring-3 {
-      width: 250px;
-      height: 250px;
-      border: 1px dashed rgba(45, 212, 191, 0.35);
-      animation: orbitSpin1 24s linear infinite;
-      transform: rotateX(55deg) rotateY(40deg);
-    }
-
-    @keyframes orbitSpin1 {
-      0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
-      100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
-    }
-
-    @keyframes orbitSpin2 {
-      0% { transform: rotateX(72deg) rotateY(-25deg) rotateZ(0deg); }
-      100% { transform: rotateX(72deg) rotateY(-25deg) rotateZ(360deg); }
-    }
-
-    /* 3D Floating Micro-Badges */
-    .hero-3d-badge {
-      position: absolute;
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 9999px;
-      padding: 0.35rem 0.75rem;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-      pointer-events: auto;
-      z-index: 6;
-      transform-style: preserve-3d;
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      cursor: default;
-    }
-
-    .hero-3d-badge:hover {
-      transform: scale(1.12) translateZ(40px);
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.6);
-    }
-
-    .hero-3d-badge.badge-top-right {
-      top: 8px;
-      right: -24px;
-      animation: float3dBadge1 5s ease-in-out infinite;
-    }
-
-    .hero-3d-badge.badge-bottom-left {
-      bottom: 10px;
-      left: -20px;
-      animation: float3dBadge2 6s ease-in-out infinite 0.8s;
-    }
-
-    .hero-3d-badge.badge-top-left {
-      top: 15px;
-      left: -28px;
-      animation: float3dBadge3 5.5s ease-in-out infinite 1.6s;
-    }
-
-    @keyframes float3dBadge1 {
-      0%, 100% { transform: translateY(0) translateZ(26px); }
-      50% { transform: translateY(-8px) translateZ(36px); }
-    }
-
-    @keyframes float3dBadge2 {
-      0%, 100% { transform: translateY(0) translateZ(28px); }
-      50% { transform: translateY(7px) translateZ(38px); }
-    }
-
-    @keyframes float3dBadge3 {
-      0%, 100% { transform: translateY(0) translateZ(22px); }
-      50% { transform: translateY(-6px) translateZ(32px); }
-    }
-
-    /* LARGE, CRISP PROFILE PIC WITH HOVER TILT */
+    /* LARGE, CRISP PROFILE PIC (FROZEN / STATIONARY) */
     .profile-pic {
       position: relative;
-      z-index: 2;
+      z-index: 1;
       flex-shrink: 0;
-      width: 230px;
-      height: 250px;
+      width: 250px;
+      height: 270px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transform-style: preserve-3d;
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
     }
 
@@ -616,9 +493,8 @@
       mask-image: linear-gradient(to bottom, black 84%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, black 84%, transparent 100%);
       filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5)) contrast(1.04) brightness(1.02);
-      transition: filter 0.35s ease, transform 0.35s ease;
+      transition: filter 0.35s ease;
       display: block;
-      transform: translateZ(30px);
     }
 
     .profile-pic:hover .profile-img {
@@ -640,13 +516,12 @@
       justify-content: center;
       border: 2.5px solid rgba(15, 23, 42, 0.95);
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-      z-index: 4;
-      transform: translateZ(48px);
+      z-index: 2;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
     }
 
     .profile-pic:hover .profile-badge {
-      transform: translateZ(56px) scale(1.25) rotate(15deg);
+      transform: scale(1.25) rotate(15deg);
       box-shadow: 0 0 16px rgba(16, 185, 129, 0.7);
     }
 
@@ -947,9 +822,6 @@
         padding: 2.5rem 1.5rem;
         gap: 2rem;
       }
-      .hero-avatar-stage {
-        margin: 0 auto;
-      }
       .profile-pic {
         width: 210px;
         height: 225px;
@@ -960,10 +832,6 @@
       .hero-actions-row { justify-content: center; }
       .header-links { justify-content: center; }
       .status-badge { margin: 0 auto 0.85rem; }
-      .orbit-ring-1 { width: 240px; height: 240px; }
-      .orbit-ring-2 { width: 260px; height: 260px; }
-      .orbit-ring-3 { width: 220px; height: 220px; }
-      .hero-3d-badge.badge-top-left { display: none; }
     }
 
     /* ==========================================================================
@@ -2505,32 +2373,14 @@
          HERO SECTION (LARGE PROMINENT PHOTO WITH 3D TILT HOVER & EXPANDED TITLES)
          ========================================================================== -->
     <header class="intro spotlight-card" id="hero">
-      <div class="hero-avatar-stage">
-        <!-- 3D Holographic Orbit Rings -->
-        <div class="orbit-ring orbit-ring-1"></div>
-        <div class="orbit-ring orbit-ring-2"></div>
-        <div class="orbit-ring orbit-ring-3"></div>
-
-        <!-- 3D Floating Micro-Badges -->
-        <div class="hero-3d-badge badge-top-right">
-          <span>⚡ Distributed</span>
-        </div>
-        <div class="hero-3d-badge badge-bottom-left">
-          <span>🏆 3x ICPC</span>
-        </div>
-        <div class="hero-3d-badge badge-top-left">
-          <span>🚀 InitZone</span>
-        </div>
-
-        <div class="profile-pic" id="heroProfilePic">
-          <img src="fforhad.png" alt="Forhad Uddin Ahmed" class="profile-img"
-            onerror="this.onerror=null; this.src='headshot_photo.png';">
-          <!-- Verified Engineer Badge -->
-          <div class="profile-badge" title="Verified Engineer & Competitor">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </div>
+      <div class="profile-pic" id="heroProfilePic">
+        <img src="fforhad.png" alt="Forhad Uddin Ahmed" class="profile-img"
+          onerror="this.onerror=null; this.src='headshot_photo.png';">
+        <!-- Verified Engineer Badge -->
+        <div class="profile-badge" title="Verified Engineer & Competitor">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
         </div>
       </div>
 
@@ -4189,7 +4039,7 @@
         if ('ontouchstart' in window && window.innerWidth < 768) return;
 
         const cards = document.querySelectorAll(
-          '.bento-card, .project-card, .card, .cs-playground-card, #hero'
+          '.bento-card, .project-card, .card, .cs-playground-card'
         );
 
         cards.forEach(card => {
@@ -4214,7 +4064,7 @@
             const xPct = (x / rect.width) - 0.5;
             const yPct = (y / rect.height) - 0.5;
 
-            const maxTilt = card.id === 'hero' ? 5 : 9;
+            const maxTilt = 9;
             const rotX = -yPct * maxTilt;
             const rotY = xPct * maxTilt;
 
@@ -4232,24 +4082,6 @@
             glare.style.opacity = '0';
           });
         });
-
-        // 3D Avatar Tilt
-        const heroIntro = document.getElementById('hero');
-        const profilePic = document.getElementById('heroProfilePic');
-        if (heroIntro && profilePic) {
-          heroIntro.addEventListener('mousemove', e => {
-            const rect = profilePic.getBoundingClientRect();
-            const cardX = rect.left + rect.width / 2;
-            const cardY = rect.top + rect.height / 2;
-            const deltaX = (e.clientX - cardX) / 14;
-            const deltaY = (e.clientY - cardY) / 14;
-            profilePic.style.transform = `perspective(1000px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg) translateY(-6px) translateZ(32px) scale(1.04)`;
-          });
-
-          heroIntro.addEventListener('mouseleave', () => {
-            profilePic.style.transform = '';
-          });
-        }
       }
 
       return { init };
